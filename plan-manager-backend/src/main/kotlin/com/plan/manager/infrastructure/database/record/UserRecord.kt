@@ -1,10 +1,10 @@
 /*
  * Auto-generated file. Created by MyBatis Generator
- * Generation date: 2023-01-23T12:01:15.97617+09:00
+ * Generation date: 2023-01-23T23:24:18.990501+09:00
  */
 package com.plan.manager.infrastructure.database.record
 
-import com.plan.manager.domain.enum.RoleType
+import com.plan.manager.domain.type.RoleType
 
 data class UserRecord(
     var id: Long? = null,

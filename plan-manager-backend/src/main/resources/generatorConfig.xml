@@ -20,7 +20,7 @@
         </javaClientGenerator>
         <table  schema="public" tableName="user">
             <columnOverride column="role_type" typeHandler="org.apache.ibatis.type.EnumTypeHandler"
-                            javaType="com.plan.manager.domain.enum.RoleType"/>
+                            javaType="com.plan.manager.domain.type.RoleType"/>
         </table>
         <table  schema="public" tableName="plan" />
     </context>
