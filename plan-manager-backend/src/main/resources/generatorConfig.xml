@@ -1,0 +1,27 @@
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="kotlin" targetRuntime="MyBatis3Kotlin">
+        <jdbcConnection driverClass="org.postgresql.Driver"
+                        connectionURL="jdbc:postgresql://localhost:5432/plan_manager"
+                        userId="plan_manager"
+                        password="plan_manager" />
+        <javaTypeResolver>
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+        <javaModelGenerator
+                targetPackage="com.plan.manager.infrastructure.database.record"
+                targetProject="src/main/kotlin">
+        </javaModelGenerator>
+        <javaClientGenerator
+                targetPackage="com.plan.manager.infrastructure.database.mapper"
+                targetProject="src/main/kotlin">
+        </javaClientGenerator>
+        <table  schema="public" tableName="user">
+            <columnOverride column="role_type" typeHandler="org.apache.ibatis.type.EnumTypeHandler"
+                            javaType="com.plan.manager.domain.enum.RoleType"/>
+        </table>
+        <table  schema="public" tableName="plan" />
+    </context>
+</generatorConfiguration>

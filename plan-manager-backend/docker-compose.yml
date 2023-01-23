@@ -1,0 +1,35 @@
+version: '3'
+services:
+  postgresql:
+      image: postgres:10.5
+      container_name: postgresql
+      ports:
+        - "5432:5432"
+      volumes:
+        - ./db/data:/var/lib/postgresql/data
+        - ./db/sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      environment:
+        POSTGRES_USER: plan_manager
+        POSTGRES_PASSWORD: plan_manager
+        POSTGRES_INITDB_AGES: "--encoding=UTF-8"
+      hostname: postgres
+      restart: always
+      user: root
+  pgadmin4:
+    image: dpage/pgadmin4:3.3
+    container_name: pgadmin4
+    depends_on:
+      - postgresql
+    ports:
+      - "8008:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: local
+      PGADMIN_DEFAULT_PASSWORD: local
+    hostname: pgadmin4
+    restart: always
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./redis:/data"
