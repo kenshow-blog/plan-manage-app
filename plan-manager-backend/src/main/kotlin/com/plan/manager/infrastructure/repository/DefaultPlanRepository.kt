@@ -1,6 +1,7 @@
 package com.plan.manager.infrastructure.repository
 
 import com.plan.manager.domain.model.Plan
+import com.plan.manager.domain.model.User
 import com.plan.manager.domain.repository.PlanRepository
 import com.plan.manager.domain.type.Address
 import com.plan.manager.domain.type.StatusEnum
@@ -20,7 +21,10 @@ class DefaultPlanRepository (
         return listOf(
             Plan(
             1,
-            1,
+            User(
+                1,
+                "kensho"
+            ),
             "test",
             "test",
             Address.of("東京都"),
