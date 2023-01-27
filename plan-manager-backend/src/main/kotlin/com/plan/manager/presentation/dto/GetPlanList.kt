@@ -17,8 +17,8 @@ data class PlanElements (
         val title: String,
         val description: String,
         val address: String,
-        val start_date: String,
-        val end_date: String,
+        val start_date: Date,
+        val end_date: Date,
         val status: String,
         val whether: WhetherElements
 )

@@ -3,6 +3,7 @@ package com.plan.manager.domain.model
 import com.plan.manager.domain.type.Address
 import com.plan.manager.domain.type.StatusEnum
 import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * 予定クラス
@@ -13,8 +14,8 @@ data class Plan(
     val title: String,
     val description: String,
     val address: Address,
-    val start_date: String,
-    val end_date: String,
+    val start_date: Date,
+    val end_date: Date,
     val status: StatusEnum,
     var whether: Whether
 ) {
@@ -30,7 +31,7 @@ data class Plan(
          * @param end_date
          * @param status
          */
-        fun of(id: Long, user: User, title: String, description: String, address: Address, start_date: String, end_date: String,status: StatusEnum): Plan {
+        fun of(id: Long, user: User, title: String, description: String, address: Address, start_date: Date, end_date: Date,status: StatusEnum): Plan {
             return Plan(
                     id,
                     user,
@@ -51,6 +52,7 @@ data class Plan(
     fun addWhetherInfo(whetherList: List<Whether>) {
         whetherList.forEach{
             val sdf = SimpleDateFormat("yyyy/MM/dd")
+
             val planStartDate = sdf.format(this.start_date)
             val whetherDate = sdf.format(it.dt)
             if(planStartDate == whetherDate) this.whether = it
