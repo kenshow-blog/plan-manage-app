@@ -1,6 +1,6 @@
 package com.plan.manager.infrastructure.database.mapper
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan
-import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.address
+import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.prefecture
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.description
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.endDate
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.id
@@ -20,7 +20,7 @@ private val columnList = listOf(
     name,
     title,
     description,
-    address,
+    prefecture,
     startDate,
     endDate,
     status

@@ -1,6 +1,6 @@
 /*
  * Auto-generated file. Created by MyBatis Generator
- * Generation date: 2023-01-23T23:24:19.028761+09:00
+ * Generation date: 2023-01-27T20:46:43.521538+09:00
  */
 package com.plan.manager.infrastructure.database.mapper
 
@@ -45,7 +45,7 @@ interface PlanMapper {
         Result(column="user_id", property="userId", jdbcType=JdbcType.BIGINT),
         Result(column="title", property="title", jdbcType=JdbcType.VARCHAR),
         Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
-        Result(column="address", property="address", jdbcType=JdbcType.VARCHAR),
+        Result(column="prefecture", property="prefecture", jdbcType=JdbcType.VARCHAR),
         Result(column="start_date", property="startDate", jdbcType=JdbcType.TIMESTAMP),
         Result(column="end_date", property="endDate", jdbcType=JdbcType.TIMESTAMP),
         Result(column="status", property="status", jdbcType=JdbcType.VARCHAR)

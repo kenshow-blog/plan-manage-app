@@ -12,7 +12,7 @@ create table public.plan (
     user_id bigint not null,
     title varchar(128) not null,
     description varchar(1024),
-    address varchar(1024) not null,
+    prefecture  varchar(128) not null,
     start_date timestamp with time zone not null,
     end_date timestamp with time zone not null,
     status varchar(32) not null,
@@ -26,7 +26,7 @@ insert into public.user
      email,
      password,
      name,
-     role_type role
+     role_type,
 ) values
     (
         1,
@@ -48,7 +48,7 @@ insert into public.plan
     user_id,
     title,
     description,
-    address,
+    prefecture,
     start_date,
     end_date,
     status

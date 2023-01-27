@@ -16,7 +16,7 @@ data class PlanElements (
         val user: UserElements,
         val title: String,
         val description: String,
-        val address: String,
+        val prefecture: String,
         val start_date: Date,
         val end_date: Date,
         val status: String,
@@ -28,7 +28,7 @@ data class PlanElements (
  */
 data class UserElements (
         val id: Long,
-        val name: String
+        val name: String?
 )
 
 /**

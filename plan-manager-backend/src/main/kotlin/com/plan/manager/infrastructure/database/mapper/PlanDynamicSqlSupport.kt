@@ -1,6 +1,6 @@
 /*
  * Auto-generated file. Created by MyBatis Generator
- * Generation date: 2023-01-23T23:24:19.028211+09:00
+ * Generation date: 2023-01-27T20:46:43.521387+09:00
  */
 package com.plan.manager.infrastructure.database.mapper
 
@@ -18,7 +18,7 @@ object PlanDynamicSqlSupport {
 
         val description = column<String>("description", JDBCType.VARCHAR)
 
-        val address = column<String>("address", JDBCType.VARCHAR)
+        val prefecture = column<String>("prefecture", JDBCType.VARCHAR)
 
         val startDate = column<LocalDateTime>("start_date", JDBCType.TIMESTAMP)
 

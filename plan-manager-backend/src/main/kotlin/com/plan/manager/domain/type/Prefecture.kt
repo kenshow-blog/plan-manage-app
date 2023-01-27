@@ -5,15 +5,15 @@ import com.plan.manager.application.consts.PrefectureEnum
 /**
  * 住所クラス
  */
-data class Address(
-    val prefecture: PrefectureEnum
+data class Prefecture(
+    val value: PrefectureEnum
 ) {
     companion object {
         /**
          * 引数から都道府県Enum情報を取得する。
          */
-        fun of(prefecture: String): Address = PrefectureEnum.values().find { it.prefecture == prefecture }
-            ?.let { Address(it) }
+        fun of(prefecture: String): Prefecture = PrefectureEnum.values().find { it.prefecture == prefecture }
+            ?.let { Prefecture(it) }
             ?:  throw IllegalArgumentException("都道府県ではありません。")
     }
 }
