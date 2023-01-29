@@ -31,8 +31,8 @@ class PlanController(
                     it.title,
                     it.description,
                     it.prefecture.value.name,
-                    it.start_date,
-                    it.end_date,
+                    it.startDate,
+                    it.endDate,
                     it.status.toString(),
                     WhetherElements(
                             it.whether.dt,

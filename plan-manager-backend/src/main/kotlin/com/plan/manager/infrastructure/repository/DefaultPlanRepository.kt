@@ -5,14 +5,13 @@ import com.plan.manager.domain.model.User
 import com.plan.manager.domain.repository.PlanRepository
 import com.plan.manager.domain.type.Prefecture
 import com.plan.manager.domain.type.StatusEnum
-import com.plan.manager.infrastructure.database.mapper.PlanMapper
-import com.plan.manager.infrastructure.database.mapper.deleteByPrimaryKey
-import com.plan.manager.infrastructure.database.mapper.insert
-import com.plan.manager.infrastructure.database.mapper.updateByPrimaryKeySelective
+import com.plan.manager.infrastructure.database.mapper.*
 import com.plan.manager.infrastructure.database.record.PlanRecord
 import org.springframework.stereotype.Repository
-import java.sql.Timestamp
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.*
 
 /**
@@ -21,24 +20,25 @@ import java.util.*
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @Repository
 class DefaultPlanRepository (
-    private val planMapper: PlanMapper
+    private val planMapper: PlanMapper,
+    private val planWithUserMapper: PlanWithUserMapper
     ): PlanRepository {
     override fun findAllWithUser(): List<Plan> {
-        return listOf(
+        return planWithUserMapper.select().map {
             Plan.of(
-            1,
-            User(
-                1,
-                "kensho"
-            ),
-            "test",
-            "test",
-            Prefecture.of("東京都"),
-                    Date(),
-                    Date(),
-                StatusEnum.COMPLETE,
+                    it.id!!,
+                    User(
+                            it.userId!!,
+                            it.userName!!
+                    ),
+                    it.title!!,
+                    it.description!!,
+                    Prefecture.of(it.prefecture!!),
+                    it.start_date!!,
+                    it.end_date!!,
+                    StatusEnum.getStatus(it.status!!),
             )
-        )
+        }
     }
 
     override fun save(

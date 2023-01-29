@@ -1,6 +1,7 @@
 package com.plan.manager.presentation.dto
 
 import com.plan.manager.domain.type.Temperature
+import java.time.LocalDateTime
 import java.util.*
 
 /**
@@ -17,8 +18,8 @@ data class PlanElements (
         val title: String,
         val description: String,
         val prefecture: String,
-        val start_date: Date,
-        val end_date: Date,
+        val start_date: LocalDateTime,
+        val end_date: LocalDateTime,
         val status: String,
         val whether: WhetherElements
 )

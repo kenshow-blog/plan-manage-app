@@ -22,7 +22,7 @@ interface PlanWithUserMapper {
             Result(column = "name", property = "userName", jdbcType = JdbcType.VARCHAR),
             Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
             Result(column = "description", property = "description", jdbcType = JdbcType.VARCHAR),
-            Result(column = "address", property = "address", jdbcType = JdbcType.VARCHAR),
+            Result(column = "prefecture", property = "prefecture", jdbcType = JdbcType.VARCHAR),
             Result(column = "start_date", property = "start_date", jdbcType = JdbcType.TIMESTAMP),
             Result(column = "end_date", property = "end_date", jdbcType = JdbcType.TIMESTAMP),
             Result(column = "status", property = "status", jdbcType = JdbcType.VARCHAR),

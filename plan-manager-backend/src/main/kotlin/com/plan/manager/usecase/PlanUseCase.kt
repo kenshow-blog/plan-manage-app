@@ -2,6 +2,7 @@ package com.plan.manager.usecase
 
 import com.plan.manager.domain.model.Plan
 import com.plan.manager.domain.model.User
+import com.plan.manager.domain.model.Whether
 import com.plan.manager.domain.repository.PlanRepository
 import com.plan.manager.domain.repository.WhetherRepository
 import com.plan.manager.domain.type.Prefecture
@@ -27,9 +28,13 @@ class PlanUseCase(
     @Transactional
     fun getList(): List<Plan> {
         val plans = planRepository.findAllWithUser()
-        val whetherForecasts = whetherRepository.getForecastsWithin8Days()
+        val whetherOfPrefecture = mutableMapOf<Prefecture, List<Whether>>()
         plans.forEach {
-            it.addWhetherInfo(whetherForecasts)
+            if (it.isStartDateWithin8Days() && !whetherOfPrefecture.containsKey(it.prefecture)) {
+                val whetherForecasts = whetherRepository.getForecastsWithin8Days(it.prefecture)
+                whetherOfPrefecture[it.prefecture] = whetherForecasts
+            }
+            whetherOfPrefecture[it.prefecture]?.let { it1 -> it.addWhetherInfo(it1) }
         }
         return plans
     }
