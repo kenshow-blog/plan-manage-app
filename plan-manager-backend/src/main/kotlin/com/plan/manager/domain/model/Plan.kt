@@ -76,8 +76,6 @@ data class Plan(
             val localDateTimeOfForecast = toLocalDateTime(it.dt)
             val localDateOfForecast = LocalDate.of(localDateTimeOfForecast.year, localDateTimeOfForecast.month, localDateTimeOfForecast.dayOfMonth)
             val localDateOfStartDate = LocalDate.of(this.startDate.year, this.startDate.month, this.startDate.dayOfMonth)
-            println(it)
-            println(localDateOfStartDate)
             if(localDateOfForecast == localDateOfStartDate) return changeAttributes(weather = it)
         }
         return this

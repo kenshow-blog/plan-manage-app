@@ -33,7 +33,6 @@ class CommonHttpClient {
         }
         val httpRequest = httpRequestBuilder.build()
         val jsonResponse = this.httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString()).body()
-        println(jsonResponse)
         return jacksonObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).readValue(jsonResponse, dto)
     }
 }

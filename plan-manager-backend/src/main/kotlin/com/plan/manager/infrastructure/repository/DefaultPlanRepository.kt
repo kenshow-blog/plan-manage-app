@@ -22,8 +22,6 @@ class DefaultPlanRepository (
     private val planWithUserMapper: PlanWithUserMapper
     ): PlanRepository {
     override fun findAllWithUser(): List<Plan> {
-        val test = planMapper.selectByPrimaryKey(1)
-        println(test)
         return planWithUserMapper.select().map {
             Plan.of(
                     it.id!!,
