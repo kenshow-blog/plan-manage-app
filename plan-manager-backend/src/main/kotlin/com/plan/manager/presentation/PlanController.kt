@@ -35,13 +35,13 @@ class PlanController(
                     it.endDate,
                     it.status.toString(),
                     WhetherElements(
-                            it.whether.dt,
+                            it.weather.dt,
                             TemperatureElements(
-                                    it.whether.tem
+                                    it.weather.tem
                             ),
-                            it.whether.sunrise,
-                            it.whether.sunset,
-                            it.whether.whether
+                            it.weather.sunrise,
+                            it.weather.sunset,
+                            it.weather.whether
                     )
             )
         }

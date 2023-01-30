@@ -6,7 +6,7 @@ import java.util.Date
 /**
  * 天気予報エンティティ
  */
-data class Whether(
+data class Weather(
         val dt: Date,
         val tem: Temperature,
         val sunrise: Date,
@@ -17,8 +17,8 @@ data class Whether(
         /**
          * 予報情報がない場合に返す。
          */
-        fun createdNotWhetherForecast(): Whether {
-            return Whether(
+        fun createdNotWhetherForecast(): Weather {
+            return Weather(
                     Date(),
                 Temperature(
                     0.0,

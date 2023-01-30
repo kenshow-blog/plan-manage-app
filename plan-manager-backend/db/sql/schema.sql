@@ -13,8 +13,8 @@ create table public.plan (
     title varchar(128) not null,
     description varchar(1024),
     prefecture  varchar(128) not null,
-    start_date timestamp with time zone not null,
-    end_date timestamp with time zone not null,
+    start_date timestamp NOT NULL,
+    end_date timestamp NOT NULL,
     status varchar(32) not null,
     PRIMARY KEY(id),
     foreign key (user_id) references public.user(id)
@@ -26,7 +26,7 @@ insert into public.user
      email,
      password,
      name,
-     role_type,
+     role_type
 ) values
     (
         1,
@@ -54,4 +54,7 @@ insert into public.plan
     status
 )
 values
-(1, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '東京都', '2023-01-22T12:00:00.000+09:00', '2023-01-22T16:00:00.000+09:00', '未処理');
+(1, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '東京都', '2023-01-22T12:00:00.000', '2023-01-22T16:00:00.000', '未処理'),
+(2, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '埼玉県', '2023-01-30T12:00:00.000', '2023-01-30T16:00:00.000', '未処理'),
+(3, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '神奈川県', '2023-02-05T12:00:00.000', '2023-02-05T16:00:00.000', '未処理'),
+(4, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '神奈川県', '2023-02-09T12:00:00.000', '2023-02-09T16:00:00.000', '未処理');

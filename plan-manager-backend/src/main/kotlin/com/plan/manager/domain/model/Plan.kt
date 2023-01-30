@@ -2,9 +2,11 @@ package com.plan.manager.domain.model
 
 import com.plan.manager.domain.type.Prefecture
 import com.plan.manager.domain.type.StatusEnum
-import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
+import java.util.*
 
 /**
  * 予定クラス
@@ -18,7 +20,7 @@ data class Plan(
         val startDate: LocalDateTime,
         val endDate: LocalDateTime,
         val status: StatusEnum,
-        val whether: Whether
+        val weather: Weather
 ) {
 
     companion object {
@@ -43,7 +45,7 @@ data class Plan(
                     start_date,
                     end_date,
                     status,
-                    Whether.createdNotWhetherForecast()
+                    Weather.createdNotWhetherForecast()
             )
         }
     }
@@ -59,24 +61,26 @@ data class Plan(
             start_date: LocalDateTime = this.startDate,
             end_date: LocalDateTime = this.endDate,
             status: StatusEnum = this.status,
-            whether: Whether = this.whether
+            weather: Weather = this.weather
     ) : Plan {
         return Plan(
-                id, user, title, description, prefecture, start_date, end_date, status, whether
+                id, user, title, description, prefecture, start_date, end_date, status, weather
         )
     }
     /**
      * 天気情報を付与する
-     * @param whetherList
+     * @param weatherList
      */
-    fun addWhetherInfo(whetherList: List<Whether>) {
-        whetherList.forEach{
-            val sdf = SimpleDateFormat("yyyy/MM/dd")
-
-            val planStartDate = sdf.format(this.startDate)
-            val whetherDate = sdf.format(it.dt)
-            if(planStartDate == whetherDate) changeAttributes(whether = it)
+    fun addWhetherInfo(weatherList: List<Weather>): Plan {
+        weatherList.forEach{
+            val localDateTimeOfForecast = toLocalDateTime(it.dt)
+            val localDateOfForecast = LocalDate.of(localDateTimeOfForecast.year, localDateTimeOfForecast.month, localDateTimeOfForecast.dayOfMonth)
+            val localDateOfStartDate = LocalDate.of(this.startDate.year, this.startDate.month, this.startDate.dayOfMonth)
+            println(it)
+            println(localDateOfStartDate)
+            if(localDateOfForecast == localDateOfStartDate) return changeAttributes(weather = it)
         }
+        return this
     }
     /**
      * 実施日が8日以内であるかを確認する。
@@ -85,5 +89,9 @@ data class Plan(
         val now = LocalDateTime.now()
         val days = ChronoUnit.DAYS.between(now, this.startDate)
         return days < 8
+    }
+    private fun toLocalDateTime(date: Date): LocalDateTime {
+        val instant = date.toInstant()
+        return LocalDateTime.ofInstant(instant, ZoneId.of("Asia/Tokyo"))
     }
 }

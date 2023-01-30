@@ -1,6 +1,6 @@
 /*
  * Auto-generated file. Created by MyBatis Generator
- * Generation date: 2023-01-27T20:46:43.521759+09:00
+ * Generation date: 2023-01-29T17:32:34.398339+09:00
  */
 package com.plan.manager.infrastructure.database.mapper
 

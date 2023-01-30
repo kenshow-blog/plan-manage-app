@@ -8,10 +8,8 @@ import com.plan.manager.domain.type.StatusEnum
 import com.plan.manager.infrastructure.database.mapper.*
 import com.plan.manager.infrastructure.database.record.PlanRecord
 import org.springframework.stereotype.Repository
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.util.*
 
 /**
@@ -24,6 +22,8 @@ class DefaultPlanRepository (
     private val planWithUserMapper: PlanWithUserMapper
     ): PlanRepository {
     override fun findAllWithUser(): List<Plan> {
+        val test = planMapper.selectByPrimaryKey(1)
+        println(test)
         return planWithUserMapper.select().map {
             Plan.of(
                     it.id!!,
@@ -34,8 +34,8 @@ class DefaultPlanRepository (
                     it.title!!,
                     it.description!!,
                     Prefecture.of(it.prefecture!!),
-                    it.start_date!!,
-                    it.end_date!!,
+                    it.startDate!!,
+                    it.endDate!!,
                     StatusEnum.getStatus(it.status!!),
             )
         }

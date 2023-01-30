@@ -1,17 +1,13 @@
 package com.plan.manager.infrastructure.repository
 
 import com.plan.manager.application.client.CommonHttpClient
-import com.plan.manager.domain.model.Plan
-import com.plan.manager.domain.model.Whether
+import com.plan.manager.domain.model.Weather
 import com.plan.manager.domain.repository.WhetherRepository
 import com.plan.manager.domain.type.Prefecture
 import com.plan.manager.domain.type.Temperature
 import com.plan.manager.infrastructure.dto.OpenWhetherDailyResponse
 import org.apache.http.message.BasicNameValuePair
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.env.Environment
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import java.util.Date
 
@@ -27,7 +23,7 @@ class DefaultWhetherRepository(
     val uri = ""
     @Value("\${openwhether.api.key}")
     val key = ""
-    override fun getForecastsWithin8Days(prefecture: Prefecture): List<Whether> {
+    override fun getForecastsWithin8Days(prefecture: Prefecture): List<Weather> {
         val response = commonHttpClient.get(
                 uri = this.uri,
                 headers = mapOf("Content-type" to "application/json"),
@@ -40,8 +36,8 @@ class DefaultWhetherRepository(
                 OpenWhetherDailyResponse::class.java
         )
         return response.daily.map {
-            Whether(
-                    Date(it.dt),
+            Weather(
+                    Date(it.dt * 1000),
                     Temperature(
                             it.temp.day,
                             it.temp.min,
@@ -52,7 +48,7 @@ class DefaultWhetherRepository(
                     ),
                     Date(it.sunrise),
                     Date(it.sunset),
-                    it.whether[0].description
+                    it.weather[0].description
             )
         }
     }

@@ -1,8 +1,7 @@
 package com.plan.manager.usecase
 
 import com.plan.manager.domain.model.Plan
-import com.plan.manager.domain.model.User
-import com.plan.manager.domain.model.Whether
+import com.plan.manager.domain.model.Weather
 import com.plan.manager.domain.repository.PlanRepository
 import com.plan.manager.domain.repository.WhetherRepository
 import com.plan.manager.domain.type.Prefecture
@@ -11,11 +10,6 @@ import com.plan.manager.presentation.dto.SavePlanRequest
 import com.plan.manager.presentation.dto.UpdatePlanRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.util.*
 
 /**
  * 予定ユースケース
@@ -28,15 +22,15 @@ class PlanUseCase(
     @Transactional
     fun getList(): List<Plan> {
         val plans = planRepository.findAllWithUser()
-        val whetherOfPrefecture = mutableMapOf<Prefecture, List<Whether>>()
-        plans.forEach {
-            if (it.isStartDateWithin8Days() && !whetherOfPrefecture.containsKey(it.prefecture)) {
+        val weatherOfPrefecture = mutableMapOf<Prefecture, List<Weather>>()
+        val plansWithWeatherForecast = plans.map {
+            if (it.isStartDateWithin8Days() && !weatherOfPrefecture.containsKey(it.prefecture)) {
                 val whetherForecasts = whetherRepository.getForecastsWithin8Days(it.prefecture)
-                whetherOfPrefecture[it.prefecture] = whetherForecasts
+                weatherOfPrefecture[it.prefecture] = whetherForecasts
             }
-            whetherOfPrefecture[it.prefecture]?.let { it1 -> it.addWhetherInfo(it1) }
+            weatherOfPrefecture[it.prefecture]?.let { it1 ->  it.addWhetherInfo(it1) } ?: run { it }
         }
-        return plans
+        return plansWithWeatherForecast
     }
 
     fun save(plan: SavePlanRequest) {

@@ -9,7 +9,7 @@ data class PlanWithUserRecord(
         var title: String? = null,
         var description: String? = null,
         var prefecture: String? = null,
-        var start_date: LocalDateTime? = null,
-        var end_date: LocalDateTime? = null,
+        var startDate: LocalDateTime? = null,
+        var endDate: LocalDateTime? = null,
         val status: String? = null
 )

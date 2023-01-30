@@ -23,8 +23,8 @@ interface PlanWithUserMapper {
             Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
             Result(column = "description", property = "description", jdbcType = JdbcType.VARCHAR),
             Result(column = "prefecture", property = "prefecture", jdbcType = JdbcType.VARCHAR),
-            Result(column = "start_date", property = "start_date", jdbcType = JdbcType.TIMESTAMP),
-            Result(column = "end_date", property = "end_date", jdbcType = JdbcType.TIMESTAMP),
+            Result(column = "start_date", property = "startDate", jdbcType = JdbcType.TIMESTAMP_WITH_TIMEZONE),
+            Result(column = "end_date", property = "endDate", jdbcType = JdbcType.TIMESTAMP_WITH_TIMEZONE),
             Result(column = "status", property = "status", jdbcType = JdbcType.VARCHAR),
         ]
     )

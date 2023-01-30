@@ -4,6 +4,6 @@ data class OpenWhetherDailyResponse(
         val lat: Double,
         val lon: Double,
         val timezone: String,
-        val timezoneOffset: String,
+        val timezone_offset: String,
         val daily: List<OpenWhetherDailyElements>
 )
