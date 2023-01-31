@@ -46,8 +46,8 @@ class DefaultWhetherRepository(
                             it.temp.eve,
                             it.temp.morn,
                     ),
-                    Date(it.sunrise),
-                    Date(it.sunset),
+                    Date(it.sunrise * 1000),
+                    Date(it.sunset * 1000),
                     it.weather[0].description
             )
         }

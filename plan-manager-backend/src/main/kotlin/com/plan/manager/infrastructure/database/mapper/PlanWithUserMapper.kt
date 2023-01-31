@@ -1,10 +1,7 @@
 package com.plan.manager.infrastructure.database.mapper
 
 import com.plan.manager.infrastructure.database.record.PlanWithUserRecord
-import org.apache.ibatis.annotations.Mapper
-import org.apache.ibatis.annotations.Results
-import org.apache.ibatis.annotations.Result
-import org.apache.ibatis.annotations.SelectProvider
+import org.apache.ibatis.annotations.*
 import org.apache.ibatis.type.JdbcType
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter
@@ -29,4 +26,7 @@ interface PlanWithUserMapper {
         ]
     )
     fun selectMany(selectStatement: SelectStatementProvider): List<PlanWithUserRecord>
+    @SelectProvider(type = SqlProviderAdapter::class, method = "select")
+    @ResultMap("PlanWithUserRecordResult")
+    fun selectOne(selectStatement: SelectStatementProvider): PlanWithUserRecord?
 }

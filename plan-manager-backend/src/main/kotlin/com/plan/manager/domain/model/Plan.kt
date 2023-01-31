@@ -6,7 +6,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.Date
 
 /**
  * 予定クラス
@@ -36,6 +36,30 @@ data class Plan(
          * @param status
          */
         fun of(id: Long, user: User, title: String, description: String, prefecture: Prefecture, start_date: LocalDateTime, end_date: LocalDateTime, status: StatusEnum): Plan {
+            return Plan(
+                    id,
+                    user,
+                    title,
+                    description,
+                    prefecture,
+                    start_date,
+                    end_date,
+                    status,
+                    Weather.createdNotWhetherForecast()
+            )
+        }
+        /**
+         * 新規予定クラス生成する。
+         * @param user
+         * @param title
+         * @param description
+         * @param prefecture
+         * @param start_date
+         * @param end_date
+         * @param status
+         */
+        fun create(user: User, title: String, description: String, prefecture: Prefecture, start_date: LocalDateTime, end_date: LocalDateTime, status: StatusEnum): Plan {
+            val id = System.currentTimeMillis()
             return Plan(
                     id,
                     user,

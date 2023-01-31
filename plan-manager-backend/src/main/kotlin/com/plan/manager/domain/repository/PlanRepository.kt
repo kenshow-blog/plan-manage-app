@@ -17,16 +17,7 @@ interface PlanRepository {
     /**
      * 予定を作成する。
      */
-    fun save(
-            id: Long,
-            userId: Long,
-            title: String,
-            description: String,
-            prefecture: Prefecture,
-            startDate: LocalDateTime,
-            endDate: LocalDateTime,
-            status: StatusEnum
-    )
+    fun save(plan: Plan)
 
     /**
      * 予定を更新する。
@@ -45,4 +36,9 @@ interface PlanRepository {
      * 予定を削除する。
      */
     fun delete(id: Long)
+
+    /**
+     * idに紐づくプランを取得する。
+     */
+    fun findOne(id: Long): Plan?
 }

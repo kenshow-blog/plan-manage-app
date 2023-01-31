@@ -12,7 +12,8 @@ import com.plan.manager.infrastructure.database.mapper.UserDynamicSqlSupport.Use
 import com.plan.manager.infrastructure.database.mapper.UserDynamicSqlSupport.User
 import com.plan.manager.infrastructure.database.record.PlanWithUserRecord
 import org.mybatis.dynamic.sql.SqlBuilder.equalTo
-import org.mybatis.dynamic.sql.util.kotlin.mybatis3.*
+import org.mybatis.dynamic.sql.SqlBuilder.isEqualTo
+import org.mybatis.dynamic.sql.util.kotlin.mybatis3.select
 
 private val columnList = listOf(
     id,
@@ -34,4 +35,15 @@ fun PlanWithUserMapper.select(): List<PlanWithUserRecord> {
         }
     }
     return selectMany(selectStatement)
+}
+
+fun PlanWithUserMapper.selectByPrimaryKey(id_: Long): PlanWithUserRecord? {
+    val selectStatement = select(columnList) {
+        from(Plan, "p")
+        leftJoin(User, "u") {
+            on(Plan.userId, equalTo(User.id))
+        }
+        where(id, isEqualTo(id_))
+    }
+    return selectOne(selectStatement)
 }

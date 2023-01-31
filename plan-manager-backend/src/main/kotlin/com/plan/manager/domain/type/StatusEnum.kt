@@ -10,9 +10,9 @@ enum class StatusEnum {
     companion object {
         fun getStatus(status: String): StatusEnum {
             return when (status) {
-                "完了" -> COMPLETE
-                "処理中" -> PROCESS
-                "未処理" -> UNPROCESSED
+                "COMPLETE" -> COMPLETE
+                "PROCESS" -> PROCESS
+                "UNPROCESSED" -> UNPROCESSED
                 else -> throw IllegalArgumentException("ステータスの値が不正です。")
             }
         }

@@ -3,6 +3,7 @@ package com.plan.manager.usecase
 import com.plan.manager.domain.model.Plan
 import com.plan.manager.domain.model.Weather
 import com.plan.manager.domain.repository.PlanRepository
+import com.plan.manager.domain.repository.UserRepository
 import com.plan.manager.domain.repository.WhetherRepository
 import com.plan.manager.domain.type.Prefecture
 import com.plan.manager.domain.type.StatusEnum
@@ -17,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class PlanUseCase(
         private val planRepository: PlanRepository,
-        private val whetherRepository: WhetherRepository
+        private val whetherRepository: WhetherRepository,
+        private val userRepository: UserRepository
 ) {
     @Transactional
     fun getList(): List<Plan> {
@@ -33,20 +35,22 @@ class PlanUseCase(
         return plansWithWeatherForecast
     }
 
-    fun save(plan: SavePlanRequest) {
-        planRepository.save(
-                plan.id,
-                plan.userId,
-                plan.title,
-                plan.description,
-                Prefecture.of(plan.prefecture),
-                plan.startDate,
-                plan.endDate,
-                StatusEnum.getStatus(plan.status)
+    fun save(request: SavePlanRequest) {
+        val user = userRepository.findOne(request.userId) ?: throw IllegalArgumentException("与えられたuserIdに紐づくユーザーは存在しません。")
+        val plan = Plan.create(
+                user,
+                request.title,
+                request.description,
+                Prefecture.of(request.prefecture),
+                request.startDate,
+                request.endDate,
+                StatusEnum.getStatus(request.status)
         )
+        planRepository.save(plan)
     }
 
     fun update(plan: UpdatePlanRequest) {
+//        val plan = planRepository.findOne(id) ?: throw IllegalArgumentException("与えられたplanIdに紐づくユーザーは存在しません。")
         planRepository.update(
                 plan.id,
                 plan.title,
@@ -59,6 +63,7 @@ class PlanUseCase(
     }
 
     fun delete(id: Long) {
-        planRepository.delete(id)
+        val plan = planRepository.findOne(id) ?: throw IllegalArgumentException("与えられたplanIdに紐づくユーザーは存在しません。")
+        planRepository.delete(plan.id)
     }
 }

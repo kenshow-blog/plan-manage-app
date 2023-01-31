@@ -9,8 +9,6 @@ import com.plan.manager.infrastructure.database.mapper.*
 import com.plan.manager.infrastructure.database.record.PlanRecord
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
-import java.time.ZoneId
-import java.util.*
 
 /**
  * プランリポジトリ実装クラス
@@ -39,25 +37,17 @@ class DefaultPlanRepository (
         }
     }
 
-    override fun save(
-            id: Long,
-            userId: Long,
-            title: String,
-            description: String,
-            prefecture: Prefecture,
-            startDate: LocalDateTime,
-            endDate: LocalDateTime,
-            status: StatusEnum ) {
+    override fun save( plan: Plan ) {
         planMapper.insert(
                 toRecord(
-                        id,
-                    userId,
-                    title,
-                    description,
-                    prefecture,
-                    startDate,
-                    endDate,
-                    status
+                        plan.id,
+                        plan.user.id,
+                        plan.title,
+                        plan.description,
+                        plan.prefecture,
+                        plan.startDate,
+                        plan.endDate,
+                        plan.status
                 )
         )
     }
@@ -68,6 +58,27 @@ class DefaultPlanRepository (
 
     override fun delete(id: Long) {
         planMapper.deleteByPrimaryKey(id)
+    }
+
+    override fun findOne(id: Long): Plan? {
+        val plan = planWithUserMapper.selectByPrimaryKey(id)
+        plan?.let {
+            return Plan.of(
+                    it.id!!,
+                    User(
+                            it.userId!!,
+                            it.userName!!
+                    ),
+                    it.title!!,
+                    it.description!!,
+                    Prefecture.of(it.prefecture!!),
+                    it.startDate!!,
+                    it.endDate!!,
+                    StatusEnum.getStatus(it.status!!),
+            )
+        } ?: run {
+            return null
+        }
     }
 
     private fun toRecord(id: Long,
@@ -83,7 +94,7 @@ class DefaultPlanRepository (
                 userId,
                 title,
                 description,
-                prefecture?.value?.name,
+                prefecture?.value?.prefecture,
                 startDate,
                 endDate,
                 status.toString(),
