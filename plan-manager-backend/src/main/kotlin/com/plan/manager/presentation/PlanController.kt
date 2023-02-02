@@ -53,7 +53,7 @@ class PlanController(
         planUseCase.save(request)
     }
 
-    @PutMapping("/updated")
+    @PutMapping("/update")
     fun update(@RequestBody request: UpdatePlanRequest) {
         planUseCase.update(request)
     }

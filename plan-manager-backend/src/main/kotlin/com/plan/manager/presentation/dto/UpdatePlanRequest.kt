@@ -7,6 +7,7 @@ import java.time.LocalDateTime
  */
 data class UpdatePlanRequest (
     val id: Long,
+    val userId: Long,
     val title: String?,
     val description: String?,
     val prefecture: String?,

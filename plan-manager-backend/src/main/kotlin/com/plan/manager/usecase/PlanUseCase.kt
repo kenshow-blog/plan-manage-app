@@ -49,16 +49,21 @@ class PlanUseCase(
         planRepository.save(plan)
     }
 
-    fun update(plan: UpdatePlanRequest) {
-//        val plan = planRepository.findOne(id) ?: throw IllegalArgumentException("与えられたplanIdに紐づくユーザーは存在しません。")
+    fun update(request: UpdatePlanRequest) {
+        val plan = planRepository.findOne(request.id) ?: throw IllegalArgumentException("与えられたplanIdに紐づくユーザーは存在しません。")
+        val user = userRepository.findOne(request.userId) ?: throw IllegalArgumentException("与えられたuserIdに紐づくユーザーは存在しません。")
+        if (user.id != plan.user.id) throw IllegalArgumentException("他人のユーザーの予定を編集することはできません。")
+
+        val prefecture = if (request.prefecture != null) Prefecture.of(request.prefecture) else null
+        val status = if (request.status != null) StatusEnum.getStatus(request.status) else null
         planRepository.update(
-                plan.id,
-                plan.title,
-                plan.description,
-                if (plan.prefecture != null) Prefecture.of(plan.prefecture) else null,
-                plan.startDate,
-                plan.endDate,
-                if (plan.status != null) StatusEnum.getStatus(plan.status) else null
+                request.id,
+                request.title,
+                request.description,
+                prefecture,
+                request.startDate,
+                request.endDate,
+                status
         )
     }
 
