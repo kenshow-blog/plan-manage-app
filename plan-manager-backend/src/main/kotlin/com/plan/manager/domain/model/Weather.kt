@@ -12,26 +12,4 @@ data class Weather(
         val sunrise: Date,
         val sunset: Date,
         val whether: String
-) {
-    companion object {
-        /**
-         * 予報情報がない場合に返す。
-         */
-        fun createdNotWhetherForecast(): Weather {
-            return Weather(
-                    Date(),
-                Temperature(
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                ),
-                Date(),
-                Date(),
-                "晴天"
-            )
-        }
-    }
-}
+)

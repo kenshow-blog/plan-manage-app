@@ -21,7 +21,7 @@ data class PlanElements (
         val start_date: LocalDateTime,
         val end_date: LocalDateTime,
         val status: String,
-        val whether: WhetherElements
+        val whether: WhetherElements?
 )
 
 /**

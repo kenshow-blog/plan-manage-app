@@ -30,10 +30,11 @@ class PlanController(
                     ),
                     it.title,
                     it.description,
-                    it.prefecture.value.name,
+                    it.prefecture.value.prefecture,
                     it.startDate,
                     it.endDate,
                     it.status.toString(),
+                    if(it.weather != null)
                     WhetherElements(
                             it.weather.dt,
                             TemperatureElements(
@@ -42,7 +43,7 @@ class PlanController(
                             it.weather.sunrise,
                             it.weather.sunset,
                             it.weather.whether
-                    )
+                    ) else null
             )
         }
 

@@ -20,7 +20,7 @@ data class Plan(
         val startDate: LocalDateTime,
         val endDate: LocalDateTime,
         val status: StatusEnum,
-        val weather: Weather
+        val weather: Weather?
 ) {
 
     companion object {
@@ -45,7 +45,7 @@ data class Plan(
                     start_date,
                     end_date,
                     status,
-                    Weather.createdNotWhetherForecast()
+                    null
             )
         }
         /**
@@ -69,7 +69,7 @@ data class Plan(
                     start_date,
                     end_date,
                     status,
-                    Weather.createdNotWhetherForecast()
+                    null
             )
         }
     }
@@ -85,7 +85,7 @@ data class Plan(
             start_date: LocalDateTime = this.startDate,
             end_date: LocalDateTime = this.endDate,
             status: StatusEnum = this.status,
-            weather: Weather = this.weather
+            weather: Weather? = this.weather
     ) : Plan {
         return Plan(
                 id, user, title, description, prefecture, start_date, end_date, status, weather
