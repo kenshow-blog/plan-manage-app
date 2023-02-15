@@ -1,9 +1,20 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import Image from "next/image";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getPlanList, selectPlanList } from "redux/planSlice";
+import { AppDispatch } from "redux/store";
+import styles from "../styles/Home.module.css";
 
-const Home: NextPage = () => {
+export default function Home() {
+  const dispatch: AppDispatch = useDispatch();
+  const selectedPlanList = useSelector(selectPlanList);
+  useEffect(() => {
+    dispatch(getPlanList());
+  }, []);
+  useEffect(() => {
+    console.log(selectedPlanList);
+  }, [selectedPlanList]);
   return (
     <div className={styles.container}>
       <Head>
@@ -18,7 +29,7 @@ const Home: NextPage = () => {
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
 
@@ -59,14 +70,12 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
+  );
 }
-
-export default Home

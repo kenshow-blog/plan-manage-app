@@ -1,4 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from "@reduxjs/toolkit";
+import { getPlanListApi } from "services/planService";
+import { RootState } from "./store";
 
 export interface User {
   id: number;
@@ -18,7 +24,7 @@ export interface Whether {
   sunset: string;
   whether: string;
 }
-export interface PlanState {
+export interface Plan {
   id: number;
   user: User;
   title: string;
@@ -29,19 +35,15 @@ export interface PlanState {
   status: string;
   whether?: Whether;
 }
+export interface PlanState {
+  plan_list: Plan[];
+}
 
+export const getPlanList = createAsyncThunk<Plan[]>("getPlanList", async () => {
+  return await getPlanListApi();
+});
 const initialState: PlanState = {
-  id: 0,
-  user: {
-    id: 0,
-    name: "",
-  },
-  title: "",
-  description: "",
-  prefecture: "",
-  start_date: "",
-  end_date: "",
-  status: "",
+  plan_list: [],
 };
 const planSlice = createSlice({
   initialState,
@@ -51,8 +53,17 @@ const planSlice = createSlice({
       Object.assign(state, initialState);
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(getPlanList.fulfilled, (state, action) => {
+      state.plan_list = action.payload;
+    });
+    builder.addCase(getPlanList.rejected, (state) => {
+      state.plan_list = initialState.plan_list;
+    });
+  },
 });
 
 export const { initData } = planSlice.actions;
 
+export const selectPlanList = (state: RootState) => state.plan;
 export default planSlice;
