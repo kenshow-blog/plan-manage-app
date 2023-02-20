@@ -37,7 +37,7 @@ class DefaultPlanRepository (
         }
     }
 
-    override fun save( plan: Plan ) {
+    override fun save( plan: Plan ): Long {
         planMapper.insert(
                 toRecord(
                         plan.id,
@@ -50,6 +50,7 @@ class DefaultPlanRepository (
                         plan.status
                 )
         )
+        return plan.id
     }
 
     override fun update(id: Long, title: String?, description: String?, prefecture: Prefecture?, startDate: LocalDateTime?, endDate: LocalDateTime?, status: StatusEnum?) {

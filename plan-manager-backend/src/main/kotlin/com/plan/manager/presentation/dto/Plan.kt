@@ -8,7 +8,10 @@ import java.util.*
  * 予定リストのDTO
  */
 data class GetPlanListResponse(val planList: List<PlanElements>)
-
+/**
+ * 削除した予定のDTO
+ */
+data class DeletePlanId(val id: Long)
 /**
  * 予定要素
  */

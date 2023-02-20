@@ -35,7 +35,7 @@ class PlanUseCase(
         return plansWithWeatherForecast
     }
 
-    fun save(request: SavePlanRequest) {
+    fun save(request: SavePlanRequest): Plan {
         val user = userRepository.findOne(request.userId) ?: throw IllegalArgumentException("与えられたuserIdに紐づくユーザーは存在しません。")
         val plan = Plan.create(
                 user,
@@ -46,10 +46,16 @@ class PlanUseCase(
                 request.endDate,
                 StatusEnum.getStatus(request.status)
         )
-        planRepository.save(plan)
+        val id = planRepository.save(plan)
+        val createdPlan = planRepository.findOne(id)!!
+        if (createdPlan.isStartDateWithin8Days()) {
+            val whetherForecasts = whetherRepository.getForecastsWithin8Days(createdPlan.prefecture)
+            return createdPlan.addWhetherInfo(whetherForecasts)
+        }
+        return createdPlan
     }
-
-    fun update(request: UpdatePlanRequest) {
+    @Transactional
+    fun update(request: UpdatePlanRequest): Plan {
         val plan = planRepository.findOne(request.id) ?: throw IllegalArgumentException("与えられたplanIdに紐づくユーザーは存在しません。")
         val user = userRepository.findOne(request.userId) ?: throw IllegalArgumentException("与えられたuserIdに紐づくユーザーは存在しません。")
         if (user.id != plan.user.id) throw IllegalArgumentException("他人のユーザーの予定を編集することはできません。")
@@ -65,10 +71,17 @@ class PlanUseCase(
                 request.endDate,
                 status
         )
+        val updatedPlan = planRepository.findOne(request.id)
+        if (updatedPlan!!.isStartDateWithin8Days()) {
+            val whetherForecasts = whetherRepository.getForecastsWithin8Days(updatedPlan.prefecture)
+            return updatedPlan.addWhetherInfo(whetherForecasts)
+        }
+        return updatedPlan
     }
 
-    fun delete(id: Long) {
+    fun delete(id: Long): Long {
         val plan = planRepository.findOne(id) ?: throw IllegalArgumentException("与えられたplanIdに紐づくユーザーは存在しません。")
         planRepository.delete(plan.id)
+        return plan.id
     }
 }

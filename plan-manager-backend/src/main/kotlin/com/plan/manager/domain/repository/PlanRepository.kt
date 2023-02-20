@@ -17,7 +17,7 @@ interface PlanRepository {
     /**
      * 予定を作成する。
      */
-    fun save(plan: Plan)
+    fun save(plan: Plan): Long
 
     /**
      * 予定を更新する。

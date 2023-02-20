@@ -50,17 +50,63 @@ class PlanController(
         return GetPlanListResponse(planListResponse)
     }
     @PostMapping("/save")
-    fun save(@RequestBody request: SavePlanRequest) {
-        planUseCase.save(request)
+    fun save(@RequestBody request: SavePlanRequest): PlanElements {
+        val plan = planUseCase.save(request)
+        return PlanElements(
+                plan.id,
+                UserElements(
+                        plan.user.id,
+                        plan.user.name,
+                ),
+                plan.title,
+                plan.description,
+                plan.prefecture.value.prefecture,
+                plan.startDate,
+                plan.endDate,
+                plan.status.toString(),
+                if(plan.weather != null)
+                    WhetherElements(
+                            plan.weather.dt,
+                            TemperatureElements(
+                                    plan.weather.tem
+                            ),
+                            plan.weather.sunrise,
+                            plan.weather.sunset,
+                            plan.weather.whether
+                    ) else null
+        )
     }
 
     @PutMapping("/update")
-    fun update(@RequestBody request: UpdatePlanRequest) {
-        planUseCase.update(request)
+    fun update(@RequestBody request: UpdatePlanRequest): PlanElements {
+        val updatedPlan = planUseCase.update(request)
+        return PlanElements(
+                updatedPlan.id,
+                UserElements(
+                        updatedPlan.user.id,
+                        updatedPlan.user.name,
+                ),
+                updatedPlan.title,
+                updatedPlan.description,
+                updatedPlan.prefecture.value.prefecture,
+                updatedPlan.startDate,
+                updatedPlan.endDate,
+                updatedPlan.status.toString(),
+                if(updatedPlan.weather != null)
+                    WhetherElements(
+                            updatedPlan.weather.dt,
+                            TemperatureElements(
+                                    updatedPlan.weather.tem
+                            ),
+                            updatedPlan.weather.sunrise,
+                            updatedPlan.weather.sunset,
+                            updatedPlan.weather.whether
+                ) else null
+        )
     }
 
     @DeleteMapping("/delete/{plan_id}")
-    fun delete(@PathVariable("plan_id") id: Long) {
-        planUseCase.delete(id)
+    fun delete(@PathVariable("plan_id") id: Long): DeletePlanId {
+        return DeletePlanId(planUseCase.delete(id))
     }
 }
