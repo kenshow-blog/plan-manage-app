@@ -23,35 +23,38 @@ import org.mybatis.dynamic.sql.util.SqlProviderAdapter
 
 @Mapper
 interface PlanMapper {
-    @SelectProvider(type=SqlProviderAdapter::class, method="select")
+    @SelectProvider(type = SqlProviderAdapter::class, method = "select")
     fun count(selectStatement: SelectStatementProvider): Long
 
-    @DeleteProvider(type=SqlProviderAdapter::class, method="delete")
+    @DeleteProvider(type = SqlProviderAdapter::class, method = "delete")
     fun delete(deleteStatement: DeleteStatementProvider): Int
 
-    @InsertProvider(type=SqlProviderAdapter::class, method="insert")
+    @InsertProvider(type = SqlProviderAdapter::class, method = "insert")
     fun insert(insertStatement: InsertStatementProvider<PlanRecord>): Int
 
-    @InsertProvider(type=SqlProviderAdapter::class, method="insertMultiple")
+    @InsertProvider(type = SqlProviderAdapter::class, method = "insertMultiple")
     fun insertMultiple(multipleInsertStatement: MultiRowInsertStatementProvider<PlanRecord>): Int
 
-    @SelectProvider(type=SqlProviderAdapter::class, method="select")
+    @SelectProvider(type = SqlProviderAdapter::class, method = "select")
     @ResultMap("PlanRecordResult")
     fun selectOne(selectStatement: SelectStatementProvider): PlanRecord?
 
-    @SelectProvider(type=SqlProviderAdapter::class, method="select")
-    @Results(id="PlanRecordResult", value = [
-        Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
-        Result(column="user_id", property="userId", jdbcType=JdbcType.BIGINT),
-        Result(column="title", property="title", jdbcType=JdbcType.VARCHAR),
-        Result(column="description", property="description", jdbcType=JdbcType.VARCHAR),
-        Result(column="prefecture", property="prefecture", jdbcType=JdbcType.VARCHAR),
-        Result(column="start_date", property="startDate", jdbcType=JdbcType.TIMESTAMP),
-        Result(column="end_date", property="endDate", jdbcType=JdbcType.TIMESTAMP),
-        Result(column="status", property="status", jdbcType=JdbcType.VARCHAR)
-    ])
+    @SelectProvider(type = SqlProviderAdapter::class, method = "select")
+    @Results(
+        id = "PlanRecordResult",
+        value = [
+            Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT, id = true),
+            Result(column = "user_id", property = "userId", jdbcType = JdbcType.BIGINT),
+            Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
+            Result(column = "description", property = "description", jdbcType = JdbcType.VARCHAR),
+            Result(column = "prefecture", property = "prefecture", jdbcType = JdbcType.VARCHAR),
+            Result(column = "start_date", property = "startDate", jdbcType = JdbcType.TIMESTAMP),
+            Result(column = "end_date", property = "endDate", jdbcType = JdbcType.TIMESTAMP),
+            Result(column = "status", property = "status", jdbcType = JdbcType.VARCHAR)
+        ]
+    )
     fun selectMany(selectStatement: SelectStatementProvider): List<PlanRecord>
 
-    @UpdateProvider(type=SqlProviderAdapter::class, method="update")
+    @UpdateProvider(type = SqlProviderAdapter::class, method = "update")
     fun update(updateStatement: UpdateStatementProvider): Int
 }

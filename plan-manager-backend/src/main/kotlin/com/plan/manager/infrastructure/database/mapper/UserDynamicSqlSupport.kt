@@ -5,8 +5,8 @@
 package com.plan.manager.infrastructure.database.mapper
 
 import com.plan.manager.domain.type.RoleType
-import java.sql.JDBCType
 import org.mybatis.dynamic.sql.SqlTable
+import java.sql.JDBCType
 
 object UserDynamicSqlSupport {
     object User : SqlTable("public.user") {

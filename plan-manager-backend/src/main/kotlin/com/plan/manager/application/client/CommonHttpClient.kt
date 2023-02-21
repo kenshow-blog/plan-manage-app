@@ -15,21 +15,21 @@ import java.net.http.HttpResponse
 @Repository
 class CommonHttpClient {
     private val httpClient = HttpClient.newBuilder()
-            .version(Version.HTTP_1_1)
-            .build()
+        .version(Version.HTTP_1_1)
+        .build()
     fun <V> get(
-            uri: String,
-            headers: Map<String, String>,
-            queryParameters: List<NameValuePair>,
-            dto: Class<V>
-    ) : V {
+        uri: String,
+        headers: Map<String, String>,
+        queryParameters: List<NameValuePair>,
+        dto: Class<V>
+    ): V {
         val uriBuild = URIBuilder(HttpGet(uri).uri)
-                .addParameters(queryParameters)
-                .build()
+            .addParameters(queryParameters)
+            .build()
         val httpRequestBuilder = HttpRequest.newBuilder(uriBuild)
-                .GET()
+            .GET()
         headers.forEach {
-            httpRequestBuilder.header(it.key,it.value)
+            httpRequestBuilder.header(it.key, it.value)
         }
         val httpRequest = httpRequestBuilder.build()
         val jsonResponse = this.httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString()).body()

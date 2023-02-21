@@ -15,7 +15,7 @@ export default function Home() {
     dispatch(getPlanList());
   }, []);
   useEffect(() => {
-    console.log(selectedPlanList);
+    console.log(selectedPlanList[0]);
   }, [selectedPlanList]);
   return (
     <Box className={styles.container} p={4}>
@@ -41,7 +41,7 @@ export default function Home() {
           新規作成
         </Button>
       </Box>
-      <CollapsibleTable />
+      <CollapsibleTable planList={selectedPlanList} />
       <footer className={styles.footer}>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"

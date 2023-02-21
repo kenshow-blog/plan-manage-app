@@ -11,15 +11,15 @@ import org.springframework.stereotype.Repository
  */
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @Repository
-class DefaultUserRepository (
-        private val userMapper: UserMapper
-): UserRepository {
+class DefaultUserRepository(
+    private val userMapper: UserMapper
+) : UserRepository {
     override fun findOne(id: Long): User? {
         val userRecord = userMapper.selectByPrimaryKey(id)
         userRecord?.let {
             return User(
-                    it.id!!,
-                    it.name!!
+                it.id!!,
+                it.name!!
             )
         } ?: run {
             return null

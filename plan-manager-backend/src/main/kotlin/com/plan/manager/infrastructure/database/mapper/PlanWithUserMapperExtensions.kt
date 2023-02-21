@@ -1,15 +1,15 @@
 package com.plan.manager.infrastructure.database.mapper
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan
-import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.prefecture
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.description
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.endDate
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.id
+import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.prefecture
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.startDate
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.status
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.title
 import com.plan.manager.infrastructure.database.mapper.PlanDynamicSqlSupport.Plan.userId
-import com.plan.manager.infrastructure.database.mapper.UserDynamicSqlSupport.User.name
 import com.plan.manager.infrastructure.database.mapper.UserDynamicSqlSupport.User
+import com.plan.manager.infrastructure.database.mapper.UserDynamicSqlSupport.User.name
 import com.plan.manager.infrastructure.database.record.PlanWithUserRecord
 import org.mybatis.dynamic.sql.SqlBuilder.equalTo
 import org.mybatis.dynamic.sql.SqlBuilder.isEqualTo

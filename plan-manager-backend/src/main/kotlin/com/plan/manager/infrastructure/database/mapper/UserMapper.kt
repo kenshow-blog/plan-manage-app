@@ -24,32 +24,35 @@ import org.mybatis.dynamic.sql.util.SqlProviderAdapter
 
 @Mapper
 interface UserMapper {
-    @SelectProvider(type=SqlProviderAdapter::class, method="select")
+    @SelectProvider(type = SqlProviderAdapter::class, method = "select")
     fun count(selectStatement: SelectStatementProvider): Long
 
-    @DeleteProvider(type=SqlProviderAdapter::class, method="delete")
+    @DeleteProvider(type = SqlProviderAdapter::class, method = "delete")
     fun delete(deleteStatement: DeleteStatementProvider): Int
 
-    @InsertProvider(type=SqlProviderAdapter::class, method="insert")
+    @InsertProvider(type = SqlProviderAdapter::class, method = "insert")
     fun insert(insertStatement: InsertStatementProvider<UserRecord>): Int
 
-    @InsertProvider(type=SqlProviderAdapter::class, method="insertMultiple")
+    @InsertProvider(type = SqlProviderAdapter::class, method = "insertMultiple")
     fun insertMultiple(multipleInsertStatement: MultiRowInsertStatementProvider<UserRecord>): Int
 
-    @SelectProvider(type=SqlProviderAdapter::class, method="select")
+    @SelectProvider(type = SqlProviderAdapter::class, method = "select")
     @ResultMap("UserRecordResult")
     fun selectOne(selectStatement: SelectStatementProvider): UserRecord?
 
-    @SelectProvider(type=SqlProviderAdapter::class, method="select")
-    @Results(id="UserRecordResult", value = [
-        Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
-        Result(column="email", property="email", jdbcType=JdbcType.VARCHAR),
-        Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
-        Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
-        Result(column="role_type", property="roleType", typeHandler=EnumTypeHandler::class, jdbcType=JdbcType.VARCHAR)
-    ])
+    @SelectProvider(type = SqlProviderAdapter::class, method = "select")
+    @Results(
+        id = "UserRecordResult",
+        value = [
+            Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT, id = true),
+            Result(column = "email", property = "email", jdbcType = JdbcType.VARCHAR),
+            Result(column = "password", property = "password", jdbcType = JdbcType.VARCHAR),
+            Result(column = "name", property = "name", jdbcType = JdbcType.VARCHAR),
+            Result(column = "role_type", property = "roleType", typeHandler = EnumTypeHandler::class, jdbcType = JdbcType.VARCHAR)
+        ]
+    )
     fun selectMany(selectStatement: SelectStatementProvider): List<UserRecord>
 
-    @UpdateProvider(type=SqlProviderAdapter::class, method="update")
+    @UpdateProvider(type = SqlProviderAdapter::class, method = "update")
     fun update(updateStatement: UpdateStatementProvider): Int
 }

@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 /**
  * 予定作成DTOクラス
  */
-data class UpdatePlanRequest (
+data class UpdatePlanRequest(
     val id: Long,
     val userId: Long,
     val title: String?,

@@ -12,126 +12,130 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { Plan } from "redux/planSlice";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Image from "next/image";
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-  price: number
-) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  };
-}
-
-function Row(props: { row: ReturnType<typeof createData> }) {
+function Row(props: { row: Plan }) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
-
+  console.log(row.description);
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
+          {row.whether && (
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          )}
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.name}
+          {row.title}
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
+        <TableCell>{row.description}</TableCell>
+        <TableCell>{row.prefecture}</TableCell>
+        <TableCell>{row.start_date}</TableCell>
+        <TableCell>{row.end_date}</TableCell>
+        <TableCell>
+          <IconButton
+            aria-label="edit row"
+            size="small"
+            onClick={() => console.log("hey")}
+          >
+            <EditIcon />
+          </IconButton>
+          <IconButton
+            aria-label="delete row"
+            size="small"
+            onClick={() => console.log("hey")}
+          >
+            <DeleteForeverIcon />
+          </IconButton>
+        </TableCell>
       </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                History
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
+      {row.whether && (
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box sx={{ margin: 1 }}>
+                <Typography variant="h6" gutterBottom component="div">
+                  天気情報
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>日付</TableCell>
+                      <TableCell>天気</TableCell>
+                      <TableCell align="right">最高気温</TableCell>
+                      <TableCell align="right">最低気温</TableCell>
+                      <TableCell align="right">午前</TableCell>
+                      <TableCell align="right">午後</TableCell>
+                      <TableCell align="right">夜</TableCell>
+                      <TableCell>日入時刻</TableCell>
+                      <TableCell>日暮時刻</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow key={row.whether.dt}>
+                      <TableCell component="th" scope="row">
+                        {row.whether.dt}
+                      </TableCell>
+                      <TableCell>
+                        <Image
+                          src={`https://openweathermap.org/img/w/${row.whether.icon}.png`}
+                          width={40}
+                          height={40}
+                          alt="天気アイコン"
+                        />
+                      </TableCell>
+                      <TableCell align="right">{row.whether.tem.max}</TableCell>
+                      <TableCell align="right">{row.whether.tem.min}</TableCell>
+                      <TableCell align="right">
+                        {row.whether.tem.morn}
+                      </TableCell>
+                      <TableCell align="right">{row.whether.tem.day}</TableCell>
+                      <TableCell align="right">
+                        {row.whether.tem.night}
+                      </TableCell>
+                      <TableCell>{row.whether.sunrise}</TableCell>
+                      <TableCell>{row.whether.sunset}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      )}
     </React.Fragment>
   );
 }
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0, 3.99),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3, 4.99),
-  createData("Eclair", 262, 16.0, 24, 6.0, 3.79),
-  createData("Cupcake", 305, 3.7, 67, 4.3, 2.5),
-  createData("Gingerbread", 356, 16.0, 49, 3.9, 1.5),
-];
-
-export default function CollapsibleTable() {
+export default function CollapsibleTable(props: { planList: Plan[] }) {
+  const { planList } = props;
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell>タイトル</TableCell>
+            <TableCell>内容</TableCell>
+            <TableCell>場所</TableCell>
+            <TableCell>開始日</TableCell>
+            <TableCell>終了日</TableCell>
+            <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
+          {planList.length > 0 &&
+            planList.map((row) => <Row key={row.id} row={row} />)}
         </TableBody>
       </Table>
     </TableContainer>

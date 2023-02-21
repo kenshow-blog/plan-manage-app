@@ -14,6 +14,6 @@ data class Prefecture(
          */
         fun of(prefecture: String): Prefecture = PrefectureEnum.values().find { it.prefecture == prefecture }
             ?.let { Prefecture(it) }
-            ?:  throw IllegalArgumentException("都道府県ではありません。")
+            ?: throw IllegalArgumentException("都道府県ではありません。")
     }
 }

@@ -4,9 +4,9 @@
  */
 package com.plan.manager.infrastructure.database.mapper
 
+import org.mybatis.dynamic.sql.SqlTable
 import java.sql.JDBCType
 import java.time.LocalDateTime
-import org.mybatis.dynamic.sql.SqlTable
 
 object PlanDynamicSqlSupport {
     object Plan : SqlTable("public.plan") {

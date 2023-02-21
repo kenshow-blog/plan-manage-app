@@ -17,9 +17,9 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service
 class PlanUseCase(
-        private val planRepository: PlanRepository,
-        private val whetherRepository: WhetherRepository,
-        private val userRepository: UserRepository
+    private val planRepository: PlanRepository,
+    private val whetherRepository: WhetherRepository,
+    private val userRepository: UserRepository
 ) {
     @Transactional
     fun getList(): List<Plan> {
@@ -30,7 +30,7 @@ class PlanUseCase(
                 val whetherForecasts = whetherRepository.getForecastsWithin8Days(it.prefecture)
                 weatherOfPrefecture[it.prefecture] = whetherForecasts
             }
-            weatherOfPrefecture[it.prefecture]?.let { it1 ->  it.addWhetherInfo(it1) } ?: run { it }
+            weatherOfPrefecture[it.prefecture]?.let { it1 -> it.addWhetherInfo(it1) } ?: run { it }
         }
         return plansWithWeatherForecast
     }
@@ -38,13 +38,13 @@ class PlanUseCase(
     fun save(request: SavePlanRequest): Plan {
         val user = userRepository.findOne(request.userId) ?: throw IllegalArgumentException("与えられたuserIdに紐づくユーザーは存在しません。")
         val plan = Plan.create(
-                user,
-                request.title,
-                request.description,
-                Prefecture.of(request.prefecture),
-                request.startDate,
-                request.endDate,
-                StatusEnum.getStatus(request.status)
+            user,
+            request.title,
+            request.description,
+            Prefecture.of(request.prefecture),
+            request.startDate,
+            request.endDate,
+            StatusEnum.getStatus(request.status)
         )
         val id = planRepository.save(plan)
         val createdPlan = planRepository.findOne(id)!!
@@ -63,13 +63,13 @@ class PlanUseCase(
         val prefecture = if (request.prefecture != null) Prefecture.of(request.prefecture) else null
         val status = if (request.status != null) StatusEnum.getStatus(request.status) else null
         planRepository.update(
-                request.id,
-                request.title,
-                request.description,
-                prefecture,
-                request.startDate,
-                request.endDate,
-                status
+            request.id,
+            request.title,
+            request.description,
+            prefecture,
+            request.startDate,
+            request.endDate,
+            status
         )
         val updatedPlan = planRepository.findOne(request.id)
         if (updatedPlan!!.isStartDateWithin8Days()) {

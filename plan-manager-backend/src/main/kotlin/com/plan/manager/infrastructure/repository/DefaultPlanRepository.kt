@@ -5,7 +5,13 @@ import com.plan.manager.domain.model.User
 import com.plan.manager.domain.repository.PlanRepository
 import com.plan.manager.domain.type.Prefecture
 import com.plan.manager.domain.type.StatusEnum
-import com.plan.manager.infrastructure.database.mapper.*
+import com.plan.manager.infrastructure.database.mapper.PlanMapper
+import com.plan.manager.infrastructure.database.mapper.PlanWithUserMapper
+import com.plan.manager.infrastructure.database.mapper.deleteByPrimaryKey
+import com.plan.manager.infrastructure.database.mapper.insert
+import com.plan.manager.infrastructure.database.mapper.select
+import com.plan.manager.infrastructure.database.mapper.selectByPrimaryKey
+import com.plan.manager.infrastructure.database.mapper.updateByPrimaryKeySelective
 import com.plan.manager.infrastructure.database.record.PlanRecord
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
@@ -15,46 +21,46 @@ import java.time.LocalDateTime
  */
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @Repository
-class DefaultPlanRepository (
+class DefaultPlanRepository(
     private val planMapper: PlanMapper,
     private val planWithUserMapper: PlanWithUserMapper
-    ): PlanRepository {
+) : PlanRepository {
     override fun findAllWithUser(): List<Plan> {
         return planWithUserMapper.select().map {
             Plan.of(
-                    it.id!!,
-                    User(
-                            it.userId!!,
-                            it.userName!!
-                    ),
-                    it.title!!,
-                    it.description!!,
-                    Prefecture.of(it.prefecture!!),
-                    it.startDate!!,
-                    it.endDate!!,
-                    StatusEnum.getStatus(it.status!!),
+                it.id!!,
+                User(
+                    it.userId!!,
+                    it.userName!!
+                ),
+                it.title!!,
+                it.description!!,
+                Prefecture.of(it.prefecture!!),
+                it.startDate!!,
+                it.endDate!!,
+                StatusEnum.getStatus(it.status!!),
             )
         }
     }
 
-    override fun save( plan: Plan ): Long {
+    override fun save(plan: Plan): Long {
         planMapper.insert(
-                toRecord(
-                        plan.id,
-                        plan.user.id,
-                        plan.title,
-                        plan.description,
-                        plan.prefecture,
-                        plan.startDate,
-                        plan.endDate,
-                        plan.status
-                )
+            toRecord(
+                plan.id,
+                plan.user.id,
+                plan.title,
+                plan.description,
+                plan.prefecture,
+                plan.startDate,
+                plan.endDate,
+                plan.status
+            )
         )
         return plan.id
     }
 
     override fun update(id: Long, title: String?, description: String?, prefecture: Prefecture?, startDate: LocalDateTime?, endDate: LocalDateTime?, status: StatusEnum?) {
-        planMapper.updateByPrimaryKeySelective(toRecord(id, title= title, description = description, prefecture = prefecture, startDate = startDate, endDate = endDate, status = status))
+        planMapper.updateByPrimaryKeySelective(toRecord(id, title = title, description = description, prefecture = prefecture, startDate = startDate, endDate = endDate, status = status))
     }
 
     override fun delete(id: Long) {
@@ -65,40 +71,42 @@ class DefaultPlanRepository (
         val plan = planWithUserMapper.selectByPrimaryKey(id)
         plan?.let {
             return Plan.of(
-                    it.id!!,
-                    User(
-                            it.userId!!,
-                            it.userName!!
-                    ),
-                    it.title!!,
-                    it.description!!,
-                    Prefecture.of(it.prefecture!!),
-                    it.startDate!!,
-                    it.endDate!!,
-                    StatusEnum.getStatus(it.status!!),
+                it.id!!,
+                User(
+                    it.userId!!,
+                    it.userName!!
+                ),
+                it.title!!,
+                it.description!!,
+                Prefecture.of(it.prefecture!!),
+                it.startDate!!,
+                it.endDate!!,
+                StatusEnum.getStatus(it.status!!),
             )
         } ?: run {
             return null
         }
     }
 
-    private fun toRecord(id: Long,
-                         userId: Long? = null,
-                         title: String?,
-                         description: String?,
-                         prefecture: Prefecture?,
-                         startDate: LocalDateTime?,
-                         endDate: LocalDateTime?,
-                         status: StatusEnum?): PlanRecord {
+    private fun toRecord(
+        id: Long,
+        userId: Long? = null,
+        title: String?,
+        description: String?,
+        prefecture: Prefecture?,
+        startDate: LocalDateTime?,
+        endDate: LocalDateTime?,
+        status: StatusEnum?
+    ): PlanRecord {
         return PlanRecord(
-                id,
-                userId,
-                title,
-                description,
-                prefecture?.value?.prefecture,
-                startDate,
-                endDate,
-                status.toString(),
-               )
+            id,
+            userId,
+            title,
+            description,
+            prefecture?.value?.prefecture,
+            startDate,
+            endDate,
+            status.toString(),
+        )
     }
 }

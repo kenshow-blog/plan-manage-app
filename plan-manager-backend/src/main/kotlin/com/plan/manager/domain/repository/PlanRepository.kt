@@ -23,13 +23,13 @@ interface PlanRepository {
      * 予定を更新する。
      */
     fun update(
-            id: Long,
-            title: String?,
-            description: String?,
-            prefecture: Prefecture?,
-            startDate: LocalDateTime?,
-            endDate: LocalDateTime?,
-            status: StatusEnum?
+        id: Long,
+        title: String?,
+        description: String?,
+        prefecture: Prefecture?,
+        startDate: LocalDateTime?,
+        endDate: LocalDateTime?,
+        status: StatusEnum?
     )
 
     /**

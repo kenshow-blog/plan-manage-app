@@ -17,38 +17,39 @@ import java.util.Date
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @Repository
 class DefaultWhetherRepository(
-        private val commonHttpClient: CommonHttpClient
-): WhetherRepository {
+    private val commonHttpClient: CommonHttpClient
+) : WhetherRepository {
     @Value("\${openwhether.api.uri}")
     val uri = ""
     @Value("\${openwhether.api.key}")
     val key = ""
     override fun getForecastsWithin8Days(prefecture: Prefecture): List<Weather> {
         val response = commonHttpClient.get(
-                uri = this.uri,
-                headers = mapOf("Content-type" to "application/json"),
-                queryParameters = listOf(
-                        BasicNameValuePair("lat", prefecture.value.lat.toString()),
-                        BasicNameValuePair("lon", prefecture.value.lon.toString()),
-                        BasicNameValuePair("exclude", "hourly,minutely,current"),
-                        BasicNameValuePair("appid", this.key),
-                ),
-                OpenWhetherDailyResponse::class.java
+            uri = this.uri,
+            headers = mapOf("Content-type" to "application/json"),
+            queryParameters = listOf(
+                BasicNameValuePair("lat", prefecture.value.lat.toString()),
+                BasicNameValuePair("lon", prefecture.value.lon.toString()),
+                BasicNameValuePair("exclude", "hourly,minutely,current"),
+                BasicNameValuePair("appid", this.key),
+            ),
+            OpenWhetherDailyResponse::class.java
         )
         return response.daily.map {
-            Weather(
-                    Date(it.dt * 1000),
-                    Temperature(
-                            it.temp.day,
-                            it.temp.min,
-                            it.temp.max,
-                            it.temp.night,
-                            it.temp.eve,
-                            it.temp.morn,
-                    ),
-                    Date(it.sunrise * 1000),
-                    Date(it.sunset * 1000),
-                    it.weather[0].description
+            Weather.of(
+                Date(it.dt * 1000),
+                Temperature.toDegree(
+                    it.temp.day,
+                    it.temp.min,
+                    it.temp.max,
+                    it.temp.night,
+                    it.temp.eve,
+                    it.temp.morn,
+                ),
+                Date(it.sunrise * 1000),
+                Date(it.sunset * 1000),
+                it.weather[0].icon,
+                it.weather[0].description
             )
         }
     }

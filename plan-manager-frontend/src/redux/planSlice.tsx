@@ -27,6 +27,7 @@ export interface Whether {
   };
   sunrise: string;
   sunset: string;
+  icon: string;
   whether: string;
 }
 export interface Plan {
@@ -133,5 +134,5 @@ const planSlice = createSlice({
 
 export const { initData } = planSlice.actions;
 
-export const selectPlanList = (state: RootState) => state.plan;
+export const selectPlanList = (state: RootState) => state.plan.plan_list;
 export default planSlice;
