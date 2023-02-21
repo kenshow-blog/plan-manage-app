@@ -16,16 +16,28 @@ import { Plan } from "redux/planSlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Image from "next/image";
+import { useState } from "react";
+import { PlanEditModal } from "./PlanEditModal";
+import { PlanDeleteConfirmModal } from "./PlanDeleteConfirmModal";
 
-function Row(props: { row: Plan }) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-  console.log(row.description);
+interface RowProps {
+  key: number;
+  plan: Plan;
+}
+const Row = ({ key, plan }: RowProps) => {
+  const [open, setOpen] = useState(false);
+  const [openEditModal, setEditModal] = useState(false);
+  const handleEditModalOpen = () => setEditModal(true);
+  const handleEditModalClose = () => setEditModal(false);
+  const [openDeleteConfirmModal, setOpenDeleteConfirmModal] = useState(false);
+  const handleDeleteConfirmModalOpen = () => setOpenDeleteConfirmModal(true);
+  const handleDeleteConfirmModalClose = () => setOpenDeleteConfirmModal(false);
+  console.log(plan.description);
   return (
     <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow sx={{ "& > *": { borderBottom: "unset" } }} key={key}>
         <TableCell>
-          {row.whether && (
+          {plan.whether && (
             <IconButton
               aria-label="expand row"
               size="small"
@@ -36,30 +48,30 @@ function Row(props: { row: Plan }) {
           )}
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.title}
+          {plan.title}
         </TableCell>
-        <TableCell>{row.description}</TableCell>
-        <TableCell>{row.prefecture}</TableCell>
-        <TableCell>{row.start_date}</TableCell>
-        <TableCell>{row.end_date}</TableCell>
+        <TableCell>{plan.description}</TableCell>
+        <TableCell>{plan.prefecture}</TableCell>
+        <TableCell>{plan.start_date}</TableCell>
+        <TableCell>{plan.end_date}</TableCell>
         <TableCell>
           <IconButton
             aria-label="edit row"
             size="small"
-            onClick={() => console.log("hey")}
+            onClick={handleEditModalOpen}
           >
             <EditIcon />
           </IconButton>
           <IconButton
             aria-label="delete row"
             size="small"
-            onClick={() => console.log("hey")}
+            onClick={handleDeleteConfirmModalOpen}
           >
             <DeleteForeverIcon />
           </IconButton>
         </TableCell>
       </TableRow>
-      {row.whether && (
+      {plan.whether && (
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
             <Collapse in={open} timeout="auto" unmountOnExit>
@@ -82,29 +94,35 @@ function Row(props: { row: Plan }) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow key={row.whether.dt}>
+                    <TableRow key={plan.whether.dt}>
                       <TableCell component="th" scope="row">
-                        {row.whether.dt}
+                        {plan.whether.dt}
                       </TableCell>
                       <TableCell>
                         <Image
-                          src={`https://openweathermap.org/img/w/${row.whether.icon}.png`}
+                          src={`https://openweathermap.org/img/w/${plan.whether.icon}.png`}
                           width={40}
                           height={40}
                           alt="天気アイコン"
                         />
                       </TableCell>
-                      <TableCell align="right">{row.whether.tem.max}</TableCell>
-                      <TableCell align="right">{row.whether.tem.min}</TableCell>
                       <TableCell align="right">
-                        {row.whether.tem.morn}
+                        {plan.whether.tem.max}
                       </TableCell>
-                      <TableCell align="right">{row.whether.tem.day}</TableCell>
                       <TableCell align="right">
-                        {row.whether.tem.night}
+                        {plan.whether.tem.min}
                       </TableCell>
-                      <TableCell>{row.whether.sunrise}</TableCell>
-                      <TableCell>{row.whether.sunset}</TableCell>
+                      <TableCell align="right">
+                        {plan.whether.tem.morn}
+                      </TableCell>
+                      <TableCell align="right">
+                        {plan.whether.tem.day}
+                      </TableCell>
+                      <TableCell align="right">
+                        {plan.whether.tem.night}
+                      </TableCell>
+                      <TableCell>{plan.whether.sunrise}</TableCell>
+                      <TableCell>{plan.whether.sunset}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -113,12 +131,24 @@ function Row(props: { row: Plan }) {
           </TableCell>
         </TableRow>
       )}
+      <PlanEditModal
+        isOpen={openEditModal}
+        onClose={handleEditModalClose}
+        plan={plan}
+      />
+      <PlanDeleteConfirmModal
+        isOpen={openDeleteConfirmModal}
+        onClose={handleDeleteConfirmModalClose}
+        planId={plan.id}
+      />
     </React.Fragment>
   );
-}
+};
 
-export default function CollapsibleTable(props: { planList: Plan[] }) {
-  const { planList } = props;
+export interface CollapsibleTableProps {
+  planList: Plan[];
+}
+export const CollapsibleTable = ({ planList }: CollapsibleTableProps) => {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -135,9 +165,9 @@ export default function CollapsibleTable(props: { planList: Plan[] }) {
         </TableHead>
         <TableBody>
           {planList.length > 0 &&
-            planList.map((row) => <Row key={row.id} row={row} />)}
+            planList.map((row) => <Row key={row.id} plan={row} />)}
         </TableBody>
       </Table>
     </TableContainer>
   );
-}
+};

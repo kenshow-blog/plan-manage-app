@@ -1,5 +1,5 @@
 import { Box, Typography, Button } from "@mui/material";
-import CollapsibleTable from "component/CollapsibleTable";
+import { CollapsibleTable } from "component/CollapsibleTable";
 import AppHead from "component/Head";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -14,9 +14,6 @@ export default function Home() {
   useEffect(() => {
     dispatch(getPlanList());
   }, []);
-  useEffect(() => {
-    console.log(selectedPlanList[0]);
-  }, [selectedPlanList]);
   return (
     <Box className={styles.container} p={4}>
       <AppHead />
