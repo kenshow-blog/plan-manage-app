@@ -10,63 +10,7 @@ import {
   updatePlanApi,
 } from "services/planService";
 import { RootState } from "./store";
-
-export interface User {
-  id: number;
-  name: string;
-}
-export interface Whether {
-  dt: string;
-  tem: {
-    day: number;
-    min: number;
-    max: number;
-    night: number;
-    eve: number;
-    morn: number;
-  };
-  sunrise: string;
-  sunset: string;
-  icon: string;
-  whether: string;
-}
-export interface Plan {
-  id: number;
-  user: User;
-  title: string;
-  description: string;
-  prefecture: string;
-  start_date: string;
-  end_date: string;
-  status: string;
-  whether?: Whether;
-}
-
-export interface PlanId {
-  id: number;
-}
-export interface PlanState {
-  plan_list: Plan[];
-}
-export interface CreatePlanPamras {
-  user_id: number;
-  title: string;
-  description: string;
-  prefecture: string;
-  start_date: string;
-  end_date: string;
-  status: string;
-}
-export interface UpdatePlanParams {
-  id: number;
-  user_id: number;
-  title: string;
-  description: string;
-  prefecture: string;
-  start_date: string;
-  end_date: string;
-  status: string;
-}
+import { Plan, RequestBodyPlan, PlanState } from "./types";
 
 export const getPlanList = createAsyncThunk<Plan[]>("getPlanList", async () => {
   return await getPlanListApi();
@@ -74,14 +18,14 @@ export const getPlanList = createAsyncThunk<Plan[]>("getPlanList", async () => {
 
 export const createPlan = createAsyncThunk(
   "createPlan",
-  async (params: CreatePlanPamras) => {
+  async (params: RequestBodyPlan) => {
     return await createPlanApi(params);
   }
 );
 
 export const updatePlan = createAsyncThunk(
   "updatePlan",
-  async (params: UpdatePlanParams) => {
+  async (params: RequestBodyPlan) => {
     return await updatePlanApi(params);
   }
 );

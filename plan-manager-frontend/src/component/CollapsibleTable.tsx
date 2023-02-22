@@ -12,19 +12,16 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Plan } from "redux/planSlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Image from "next/image";
 import { useState } from "react";
 import { PlanEditModal } from "./PlanEditModal";
 import { PlanDeleteConfirmModal } from "./PlanDeleteConfirmModal";
+import { Plan } from "redux/types";
 
-interface RowProps {
-  key: number;
-  plan: Plan;
-}
-const Row = ({ key, plan }: RowProps) => {
+const Row = (props: { row: Plan }) => {
+  const { row } = props;
   const [open, setOpen] = useState(false);
   const [openEditModal, setEditModal] = useState(false);
   const handleEditModalOpen = () => setEditModal(true);
@@ -32,12 +29,12 @@ const Row = ({ key, plan }: RowProps) => {
   const [openDeleteConfirmModal, setOpenDeleteConfirmModal] = useState(false);
   const handleDeleteConfirmModalOpen = () => setOpenDeleteConfirmModal(true);
   const handleDeleteConfirmModalClose = () => setOpenDeleteConfirmModal(false);
-  console.log(plan.description);
+  console.log(row.description);
   return (
     <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }} key={key}>
+      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
-          {plan.whether && (
+          {row.whether && (
             <IconButton
               aria-label="expand row"
               size="small"
@@ -48,12 +45,12 @@ const Row = ({ key, plan }: RowProps) => {
           )}
         </TableCell>
         <TableCell component="th" scope="row">
-          {plan.title}
+          {row.title}
         </TableCell>
-        <TableCell>{plan.description}</TableCell>
-        <TableCell>{plan.prefecture}</TableCell>
-        <TableCell>{plan.start_date}</TableCell>
-        <TableCell>{plan.end_date}</TableCell>
+        <TableCell>{row.description}</TableCell>
+        <TableCell>{row.prefecture}</TableCell>
+        <TableCell>{row.start_date}</TableCell>
+        <TableCell>{row.end_date}</TableCell>
         <TableCell>
           <IconButton
             aria-label="edit row"
@@ -71,7 +68,7 @@ const Row = ({ key, plan }: RowProps) => {
           </IconButton>
         </TableCell>
       </TableRow>
-      {plan.whether && (
+      {row.whether && (
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
             <Collapse in={open} timeout="auto" unmountOnExit>
@@ -94,35 +91,29 @@ const Row = ({ key, plan }: RowProps) => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow key={plan.whether.dt}>
+                    <TableRow key={row.whether.dt}>
                       <TableCell component="th" scope="row">
-                        {plan.whether.dt}
+                        {row.whether.dt}
                       </TableCell>
                       <TableCell>
                         <Image
-                          src={`https://openweathermap.org/img/w/${plan.whether.icon}.png`}
+                          src={`https://openweathermap.org/img/w/${row.whether.icon}.png`}
                           width={40}
                           height={40}
                           alt="天気アイコン"
                         />
                       </TableCell>
+                      <TableCell align="right">{row.whether.tem.max}</TableCell>
+                      <TableCell align="right">{row.whether.tem.min}</TableCell>
                       <TableCell align="right">
-                        {plan.whether.tem.max}
+                        {row.whether.tem.morn}
                       </TableCell>
+                      <TableCell align="right">{row.whether.tem.day}</TableCell>
                       <TableCell align="right">
-                        {plan.whether.tem.min}
+                        {row.whether.tem.night}
                       </TableCell>
-                      <TableCell align="right">
-                        {plan.whether.tem.morn}
-                      </TableCell>
-                      <TableCell align="right">
-                        {plan.whether.tem.day}
-                      </TableCell>
-                      <TableCell align="right">
-                        {plan.whether.tem.night}
-                      </TableCell>
-                      <TableCell>{plan.whether.sunrise}</TableCell>
-                      <TableCell>{plan.whether.sunset}</TableCell>
+                      <TableCell>{row.whether.sunrise}</TableCell>
+                      <TableCell>{row.whether.sunset}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -134,12 +125,12 @@ const Row = ({ key, plan }: RowProps) => {
       <PlanEditModal
         isOpen={openEditModal}
         onClose={handleEditModalClose}
-        plan={plan}
+        plan={row}
       />
       <PlanDeleteConfirmModal
         isOpen={openDeleteConfirmModal}
         onClose={handleDeleteConfirmModalClose}
-        planId={plan.id}
+        planId={row.id}
       />
     </React.Fragment>
   );
@@ -165,7 +156,7 @@ export const CollapsibleTable = ({ planList }: CollapsibleTableProps) => {
         </TableHead>
         <TableBody>
           {planList.length > 0 &&
-            planList.map((row) => <Row key={row.id} plan={row} />)}
+            planList.map((row) => <Row key={row.id} row={row} />)}
         </TableBody>
       </Table>
     </TableContainer>

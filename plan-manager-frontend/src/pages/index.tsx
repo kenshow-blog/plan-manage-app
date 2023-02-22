@@ -14,6 +14,7 @@ export default function Home() {
   useEffect(() => {
     dispatch(getPlanList());
   }, []);
+  console.log(selectedPlanList);
   return (
     <Box className={styles.container} p={4}>
       <AppHead />

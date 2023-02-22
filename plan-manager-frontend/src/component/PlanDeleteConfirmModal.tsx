@@ -27,9 +27,6 @@ export const PlanDeleteConfirmModal = ({
   planId,
   onClose,
 }: PlanDeleteConfirmModalProps) => {
-  useEffect(() => {
-    console.log(planId);
-  }, []);
   return (
     <Modal
       open={isOpen}
