@@ -2,7 +2,7 @@ import { Box, Typography, Button } from "@mui/material";
 import { CollapsibleTable } from "component/CollapsibleTable";
 import AppHead from "component/Head";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useInsertionEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPlanList, selectPlanList } from "redux/planSlice";
 import { AppDispatch } from "redux/store";
@@ -14,6 +14,9 @@ export default function Home() {
   useEffect(() => {
     dispatch(getPlanList());
   }, []);
+  useEffect(() => {
+    console.log(selectedPlanList);
+  }, [selectedPlanList]);
   console.log(selectedPlanList);
   return (
     <Box className={styles.container} p={4}>

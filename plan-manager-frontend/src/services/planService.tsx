@@ -28,10 +28,10 @@ export const getPlanListApi = async (): Promise<Plan[]> => {
 };
 
 export const createPlanApi = (requestBody: RequestBodyPlan): Promise<Plan> =>
-  basicApi.post("plan/create", requestBody);
+  basicApi.post("plan/create", requestBody).then((res) => res.data);
 
 export const updatePlanApi = (requestBody: RequestBodyPlan): Promise<Plan> =>
-  basicApi.put("plan/update", requestBody);
+  basicApi.put("plan/update", requestBody).then((res) => res.data);
 
 export const deletePlanApi = (queryParam: number): Promise<PlanId> =>
-  basicApi.delete(`plan/delete/${queryParam}`);
+  basicApi.delete(`plan/delete/${queryParam}`).then((res) => res.data);

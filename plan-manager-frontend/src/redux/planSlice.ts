@@ -58,6 +58,7 @@ const planSlice = createSlice({
       alert("予定の作成に失敗しました。");
     });
     builder.addCase(updatePlan.fulfilled, (state, action) => {
+      console.log(action.payload);
       state.plan_list = state.plan_list.map((p) =>
         p.id === action.payload.id ? action.payload : p
       );

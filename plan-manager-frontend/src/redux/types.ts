@@ -1,6 +1,6 @@
 export interface RequestBodyPlan {
   id?: number;
-  userId: number;
+  user_id: number;
   title: string;
   description: string;
   prefecture: string;
