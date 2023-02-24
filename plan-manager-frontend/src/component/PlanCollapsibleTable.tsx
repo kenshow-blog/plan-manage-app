@@ -16,9 +16,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Image from "next/image";
 import { useState } from "react";
-import { PlanEditModal } from "./PlanEditModal";
-import { PlanDeleteConfirmModal } from "./PlanDeleteConfirmModal";
+import { EditPlanModal } from "./EditPlanModal";
+import { DeleteConfirmPlanModal } from "./DeleteConfirmPlanModal";
 import { Plan } from "redux/types";
+import { getDateString } from "util/date";
 
 const Row = (props: { row: Plan }) => {
   const { row } = props;
@@ -29,7 +30,6 @@ const Row = (props: { row: Plan }) => {
   const [openDeleteConfirmModal, setOpenDeleteConfirmModal] = useState(false);
   const handleDeleteConfirmModalOpen = () => setOpenDeleteConfirmModal(true);
   const handleDeleteConfirmModalClose = () => setOpenDeleteConfirmModal(false);
-  console.log(row.description);
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -49,8 +49,9 @@ const Row = (props: { row: Plan }) => {
         </TableCell>
         <TableCell>{row.description}</TableCell>
         <TableCell>{row.prefecture}</TableCell>
-        <TableCell>{row.start_date}</TableCell>
-        <TableCell>{row.end_date}</TableCell>
+        <TableCell>{getDateString(new Date(row.start_date))}</TableCell>
+        <TableCell>{getDateString(new Date(row.end_date))}</TableCell>
+        <TableCell>{row.status}</TableCell>
         <TableCell>
           <IconButton
             aria-label="edit row"
@@ -70,7 +71,13 @@ const Row = (props: { row: Plan }) => {
       </TableRow>
       {row.whether && (
         <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
+          <TableCell
+            style={{
+              paddingBottom: 0,
+              paddingTop: 0,
+            }}
+            colSpan={10}
+          >
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
                 <Typography variant="h6" gutterBottom component="div">
@@ -78,7 +85,7 @@ const Row = (props: { row: Plan }) => {
                 </Typography>
                 <Table size="small" aria-label="purchases">
                   <TableHead>
-                    <TableRow>
+                    <TableRow style={{ backgroundColor: "#F2F2F2" }}>
                       <TableCell>日付</TableCell>
                       <TableCell>天気</TableCell>
                       <TableCell align="right">最高気温</TableCell>
@@ -112,8 +119,12 @@ const Row = (props: { row: Plan }) => {
                       <TableCell align="right">
                         {row.whether.tem.night}
                       </TableCell>
-                      <TableCell>{row.whether.sunrise}</TableCell>
-                      <TableCell>{row.whether.sunset}</TableCell>
+                      <TableCell>
+                        {getDateString(new Date(row.whether.sunrise))}
+                      </TableCell>
+                      <TableCell>
+                        {getDateString(new Date(row.whether.sunset))}
+                      </TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -122,12 +133,12 @@ const Row = (props: { row: Plan }) => {
           </TableCell>
         </TableRow>
       )}
-      <PlanEditModal
+      <EditPlanModal
         isOpen={openEditModal}
         onClose={handleEditModalClose}
         plan={row}
       />
-      <PlanDeleteConfirmModal
+      <DeleteConfirmPlanModal
         isOpen={openDeleteConfirmModal}
         onClose={handleDeleteConfirmModalClose}
         planId={row.id}
@@ -144,13 +155,14 @@ export const CollapsibleTable = ({ planList }: CollapsibleTableProps) => {
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
-          <TableRow>
+          <TableRow style={{ backgroundColor: "#F2F2F2" }}>
             <TableCell />
             <TableCell>タイトル</TableCell>
             <TableCell>内容</TableCell>
             <TableCell>場所</TableCell>
             <TableCell>開始日</TableCell>
             <TableCell>終了日</TableCell>
+            <TableCell>ステータス</TableCell>
             <TableCell />
           </TableRow>
         </TableHead>

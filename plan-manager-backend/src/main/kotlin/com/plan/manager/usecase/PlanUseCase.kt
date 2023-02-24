@@ -34,7 +34,7 @@ class PlanUseCase(
         }
         return plansWithWeatherForecast
     }
-
+    @Transactional
     fun save(request: SavePlanRequest): Plan {
         val user = userRepository.findOne(request.userId) ?: throw IllegalArgumentException("与えられたuserIdに紐づくユーザーは存在しません。")
         val plan = Plan.create(
@@ -78,7 +78,7 @@ class PlanUseCase(
         }
         return updatedPlan
     }
-
+    @Transactional
     fun delete(id: Long): Long {
         val plan = planRepository.findOne(id) ?: throw IllegalArgumentException("与えられたplanIdに紐づくユーザーは存在しません。")
         planRepository.delete(plan.id)

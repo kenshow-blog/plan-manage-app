@@ -43,10 +43,12 @@ export interface PlanId {
   id: number;
 }
 export interface PlanState {
+  isLoading: boolean;
   plan_list: Plan[];
 }
-export const Status = ["COMPLETE", "PROCESS", "UNPROCESSED"] as const;
+export const Status = ["", "COMPLETE", "PROCESS", "UNPROCESSED"] as const;
 export const Prefectures = [
+  "",
   "東京都",
   "神奈川県",
   "埼玉県",

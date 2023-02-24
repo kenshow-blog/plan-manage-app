@@ -1,32 +1,32 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { useEffect, useState } from "react";
+import { Plan } from "redux/types";
+import { PlanForm } from "./PlanForm";
 
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  textAlign: "center",
 };
-export interface PlanDeleteConfirmModalProps {
+
+export interface EditPlanModalProps {
   isOpen: boolean;
   onClose: () => void;
-  planId: number;
+  plan: Plan;
 }
 
-export const PlanDeleteConfirmModal = ({
+export const EditPlanModal = ({
   isOpen,
-  planId,
+  plan,
   onClose,
-}: PlanDeleteConfirmModalProps) => {
+}: EditPlanModalProps) => {
   return (
     <Modal
       open={isOpen}
@@ -35,12 +35,17 @@ export const PlanDeleteConfirmModal = ({
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          Text in a modal
-        </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-        </Typography>
+        <PlanForm
+          id={plan.id}
+          title={plan.title}
+          description={plan.description}
+          prefecture={plan.prefecture}
+          start_date={plan.start_date}
+          end_date={plan.end_date}
+          status={plan.status}
+          type="edit"
+          onClose={onClose}
+        />
       </Box>
     </Modal>
   );

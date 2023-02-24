@@ -1,27 +1,27 @@
 import { Box, Typography, Button } from "@mui/material";
-import { CollapsibleTable } from "component/CollapsibleTable";
+import { CollapsibleTable } from "component/PlanCollapsibleTable";
+import { CreatePlanModal } from "component/CreatePlanModal";
 import AppHead from "component/Head";
 import Image from "next/image";
-import { useEffect, useInsertionEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPlanList, selectPlanList } from "redux/planSlice";
 import { AppDispatch } from "redux/store";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
+  const [openCreateModal, setCreateModal] = useState(false);
+  const handleCreateModalOpen = () => setCreateModal(true);
+  const handleCreateModalClose = () => setCreateModal(false);
   const dispatch: AppDispatch = useDispatch();
   const selectedPlanList = useSelector(selectPlanList);
   useEffect(() => {
     dispatch(getPlanList());
   }, []);
-  useEffect(() => {
-    console.log(selectedPlanList);
-  }, [selectedPlanList]);
-  console.log(selectedPlanList);
   return (
-    <Box className={styles.container} p={4}>
+    <Box className={styles.container}>
       <AppHead />
-      <Box component="section" mb={4} mt={4}>
+      <Box component="section" mb={8} mt={4}>
         <Typography variant="h1" fontSize={24} fontWeight={600} mt={4} mb={6}>
           予定管理アプリ
         </Typography>
@@ -37,11 +37,15 @@ export default function Home() {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => console.log("success")}
+          onClick={handleCreateModalOpen}
         >
           新規作成
         </Button>
       </Box>
+      <CreatePlanModal
+        isOpen={openCreateModal}
+        onClose={handleCreateModalClose}
+      />
       <CollapsibleTable planList={selectedPlanList} />
       <footer className={styles.footer}>
         <a
