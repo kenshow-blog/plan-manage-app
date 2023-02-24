@@ -10,7 +10,6 @@ import {
   MenuItem,
   FormHelperText,
   Button,
-  Box,
   Grid,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
@@ -27,10 +26,6 @@ import {
 } from "redux/planSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useCallback } from "react";
-
-const styleForm = {
-  textAlign: "left",
-};
 
 export const schema = yup.object().shape({
   title: yup.string().required("入力は必須です。"),
@@ -105,7 +100,7 @@ export const PlanForm = ({
   const onSubmit = useCallback(
     async (data: PlanModel) => {
       dispatch(setLoading());
-      let params: RequestBodyPlan = {
+      const params: RequestBodyPlan = {
         user_id: 2,
         title: data.title,
         description: data.description,

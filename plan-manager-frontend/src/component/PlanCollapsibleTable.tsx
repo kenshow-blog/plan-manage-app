@@ -19,7 +19,7 @@ import { useState } from "react";
 import { EditPlanModal } from "./EditPlanModal";
 import { DeleteConfirmPlanModal } from "./DeleteConfirmPlanModal";
 import { Plan } from "redux/types";
-import { getDateString } from "util/date";
+import { getDateString, getDateTimeString } from "util/date";
 
 const Row = (props: { row: Plan }) => {
   const { row } = props;
@@ -49,8 +49,8 @@ const Row = (props: { row: Plan }) => {
         </TableCell>
         <TableCell>{row.description}</TableCell>
         <TableCell>{row.prefecture}</TableCell>
-        <TableCell>{getDateString(new Date(row.start_date))}</TableCell>
-        <TableCell>{getDateString(new Date(row.end_date))}</TableCell>
+        <TableCell>{getDateTimeString(new Date(row.start_date))}</TableCell>
+        <TableCell>{getDateTimeString(new Date(row.end_date))}</TableCell>
         <TableCell>{row.status}</TableCell>
         <TableCell>
           <IconButton
@@ -100,7 +100,7 @@ const Row = (props: { row: Plan }) => {
                   <TableBody>
                     <TableRow key={row.whether.dt}>
                       <TableCell component="th" scope="row">
-                        {row.whether.dt}
+                        {getDateString(new Date(row.whether.dt))}
                       </TableCell>
                       <TableCell>
                         <Image
@@ -120,10 +120,10 @@ const Row = (props: { row: Plan }) => {
                         {row.whether.tem.night}
                       </TableCell>
                       <TableCell>
-                        {getDateString(new Date(row.whether.sunrise))}
+                        {getDateTimeString(new Date(row.whether.sunrise))}
                       </TableCell>
                       <TableCell>
-                        {getDateString(new Date(row.whether.sunset))}
+                        {getDateTimeString(new Date(row.whether.sunset))}
                       </TableCell>
                     </TableRow>
                   </TableBody>

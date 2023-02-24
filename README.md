@@ -6,7 +6,7 @@ This is a managing plan application
 
 Once you create a new plan, you can see not only the plan's content but also the related infomations such as wheather info.
 
-![アプリ画像](https://user-images.githubusercontent.com/85926984/221207676-faa81cf3-7663-4511-81b5-0caa81896450.png)
+![アプリ画像](https://user-images.githubusercontent.com/85926984/221210558-41240259-7b90-45c4-9433-e0deead2dd85.png)
 
 ## Getting Start
 
@@ -20,6 +20,6 @@ Once you create a new plan, you can see not only the plan's content but also the
 
 5. open plan-manager-frontend by IDE (I reccomend to use VSCode)
 
-6. `yarn`
+6. `$ yarn`
 
-7. `yarn run dev`
+7. `$ yarn run dev`
