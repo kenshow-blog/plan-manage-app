@@ -6,7 +6,7 @@ This is a managing plan application
 
 Once you create a new plan, you can see not only the plan's content but also the related infomations such as wheather info.
 
-https://user-images.githubusercontent.com/85926984/221207676-faa81cf3-7663-4511-81b5-0caa81896450.png
+![アプリ画像](https://user-images.githubusercontent.com/85926984/221207676-faa81cf3-7663-4511-81b5-0caa81896450.png)
 
 ## Getting Start
 
