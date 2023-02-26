@@ -8,6 +8,22 @@ Once you create a new plan, you can see not only the plan's content but also the
 
 ![アプリ画像](https://user-images.githubusercontent.com/85926984/221210558-41240259-7b90-45c4-9433-e0deead2dd85.png)
 
+## Technical stack
+
+**frontend**
+
+- react
+- redux-toolkit
+- typescript
+
+**backend**
+
+- Kotlin
+- Spring Boot
+- Onion Architecture
+
+![image](https://user-images.githubusercontent.com/65284319/221415283-5abad695-ee52-4848-b977-05a936ccc886.png)
+
 ## Getting Start
 
 1. `$ git clone https://github.com/kenshow-blog/plan-manage-app.git`
