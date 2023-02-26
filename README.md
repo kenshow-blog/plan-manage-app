@@ -20,7 +20,7 @@ Once you create a new plan, you can see not only the plan's content but also the
 
 - Kotlin
 - Spring Boot
-- Onion Architecture
+- Clean Architecture
 
 ![image](https://user-images.githubusercontent.com/65284319/221415283-5abad695-ee52-4848-b977-05a936ccc886.png)
 
