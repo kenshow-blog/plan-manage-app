@@ -1,0 +1,135 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: storage-volume-plan
+  namespace: default
+  labels:
+    app: plan-manage
+    type: storage
+spec:
+  storageClassName: slow
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/data-plan/storage"
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: storage-claim-plan
+  namespace: default
+  labels:
+    app: plan-manage
+    type: storage
+spec:
+  storageClassName: slow
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-init-sql
+data:
+  init.sql: |-
+    create type role as ENUM ('ADMIN', 'USER');
+    create table public.user (
+        id bigint not null,
+        email varchar(256) unique not null,
+        password varchar(128) not null,
+        name varchar(32) not null,
+        role_type role,
+        PRIMARY KEY(id)
+    );
+    create table public.plan (
+        id bigint not null,
+        user_id bigint not null,
+        title varchar(128) not null,
+        description varchar(1024),
+        prefecture  varchar(128) not null,
+        start_date timestamp NOT NULL,
+        end_date timestamp NOT NULL,
+        status varchar(32) not null,
+        PRIMARY KEY(id),
+        foreign key (user_id) references public.user(id)
+    );
+
+    insert into public.user
+    (
+        id,
+        email,
+        password,
+        name,
+        role_type
+    ) values
+        (
+            1,
+            'admin@test.com',
+            '$2a$12$/mnPlMDXwZKdiHFNjG78MOsjT8oTMOx8FyG4jZddUXCFHnfh1Ix9K',
+            '管理者',
+            'ADMIN'
+        ),
+        (
+            2,
+            'user@test.com',
+            '$2a$12$8b2CuMHMzkC94UTwwJE/g.ThR2gzlu1HKXrWRRJi8UNk7XyuRc.kK',
+            'ユーザー',
+            'USER'
+        );
+    insert into public.plan
+    (
+        id,
+        user_id,
+        title,
+        description,
+        prefecture,
+        start_date,
+        end_date,
+        status
+    )
+    values
+    (1, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '東京都', '2023-01-22T12:00:00.000', '2023-01-22T16:00:00.000', 'UNPROCESSED'),
+    (2, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '埼玉県', '2023-01-30T12:00:00.000', '2023-01-30T16:00:00.000', 'UNPROCESSED'),
+    (3, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '神奈川県', '2023-02-05T12:00:00.000', '2023-02-05T16:00:00.000', 'UNPROCESSED'),
+    (4, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '神奈川県', '2023-02-09T12:00:00.000', '2023-02-09T16:00:00.000', 'UNPROCESSED');
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres
+  namespace: default
+  labels:
+    app: plan-manage
+    type: database
+spec:
+  containers:
+    - name: postgres
+      image: postgres:14-alpine
+      env:
+        - name: "POSTGRES_USER"
+          value: plan_manager
+        - name: "POSTGRES_PASSWORD"
+          value: plan_manager
+        - name: "POSTGRES_INITDB_AGES"
+          value: "--encoding=UTF-8"
+      ports:
+        - containerPort: 5432
+      volumeMounts:
+        - mountPath: "/data/db"
+          name: storage
+        - name: db-init-sql
+          mountPath: /docker-entrypoint-initdb.d
+          readOnly: true
+  volumes:
+    - name: storage
+      persistentVolumeClaim:
+        claimName: storage-claim-plan
+    - name: db-init-sql
+      configMap:
+        name: db-init-sql
