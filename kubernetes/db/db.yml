@@ -1,0 +1,164 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: storage-volume-plan
+  namespace: default
+  labels:
+    app: plan-manage
+    type: storage
+spec:
+  storageClassName: slow
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/data-plan/pv"
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: storage-claim-plan
+  namespace: default
+  labels:
+    app: plan-manage
+    type: storage
+spec:
+  storageClassName: slow
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: posgre-secret
+  namespace: default
+  labels:
+    app: plan-manage
+    type: database
+data:
+  POSTGRES_PASSWORD: cGxhbl9tYW5hZ2Vy
+  POSTGRES_USER: cGxhbl9tYW5hZ2Vy
+  keyfile: Sm9nS3lqWVdvV2gxU2dkR3d4US9IcEV5cUdrSTcwQS9teUpva3Qwb2FXME93SDB2OWkwRGdUT0lXRTRId2lxdFlmQVdxWHdJVzlReE0wNEVjWFZkcjZTdThiSUlrdmprR3hHSjFNWnFjYk5GSzNoOGFDT2VVcTlPNkE1aGZ1RU1LdUtVdktablVvWkR2eEZtRTZneVNoYitHL200MUMzWmY4eDNweVhaTjRka29VaUpOQkVGcGw3bk50Nmt3Z1hRdWMxQ28yWGIvb2huMDkyQ3lLMVNGNlhETXdUMzlFeGFCb3FLYUZRWGpsRGlzdHkvVTJmakluRmFGS09RaVR2N0Q5SmxZcTZ3SzZQSWYzZDlwcU9VSjZNZkVIK3paZ1BzRzBuQjFESTRISzg4ZFJQRENzUkh4Wnh0ckVRWmxkSGcwVkE2QzRuRE9yeDZOVERNT05WcDlmUXpXQ2d0Y1lLZk9jZXdrSmN5VktLSGdLdXJBZVY2SU40M3haRDRSK2kwMEkyTXFmUkpLc0RYbGJMZGhhU012RGlwVE4zYmtFQzlSeU9tbGhjSXpWZzl1OHZZQjdMd3V3Z2VONWJTTjFONjZqK0VzZy9RaHYzbGJEb3NocDQvQzB0Wk9QK2dlYWxJdzk3R2p4VmM1VnZsUlAwZDR2SmZaNlR0aXA0RVROTVZJK0FtN3l4T1FEZ0NEUVo3QkFzV3ZoK3ZyV0JlOWJTSVhrTWtveG5ZU0xUUStxNUpIQUlQYjIzY3lCdzFDeWsvSy9wWk5ZcnplTFljMU5VSldQZHlUVUdIQXdES2g2SEhTQ2M4cHUxN05wZTNIU2RNb2VCdEtoNWtRREU0WngrMm5xcE9QWmxObW8rRENLS2ErSm45RHFzL3lTcS80akdtU2NTRThmM1B5VTZ4UGdaaDVwTTZhcUgzNHVBTlJNYS9HWG1vRVBrZnVFT3JQTlU5N2hSRTNiQ0xlNnQ1L001SSthdEd1Ly9iK25CamJPQnBPRFlnZXY4dVdFSGdkQWRsYkVVZlFmc3Q0U210bHVFQnl1ekpqUnBvcS9yaEhrK3IzUFVwQjhvSXJpWUNaQmpOb3Z6MnBLT3dPbkZrYzhINFVhVHlKdktwazN3TVRIb1NxZmJSZGVkNXJ6UW5oRkZFcUJIcXkxa3loejdwR041eFdROHkxajdYUytKeS84bDhKSmxia3NMdDcwOWxzdnMrYm1LL2Z3cm80L0tCcVdjbkpYbjlyZmN3Ym03NGw5MCt0UE5QL2lMRmNSb3AxcWxtbXJsV0NjaVpJSnVISHNqdEdISlQwNU5sV2x2VDJXT05rQnk5Vkh2ZEI5UlJwR2Izem13MDIxU2JKREEwbWxENAo=
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-init-sql
+data:
+  init.sql: |-
+    create type role as ENUM ('ADMIN', 'USER');
+    create table public.user (
+        id bigint not null,
+        email varchar(256) unique not null,
+        password varchar(128) not null,
+        name varchar(32) not null,
+        role_type role,
+        PRIMARY KEY(id)
+    );
+    create table public.plan (
+        id bigint not null,
+        user_id bigint not null,
+        title varchar(128) not null,
+        description varchar(1024),
+        prefecture  varchar(128) not null,
+        start_date timestamp NOT NULL,
+        end_date timestamp NOT NULL,
+        status varchar(32) not null,
+        PRIMARY KEY(id),
+        foreign key (user_id) references public.user(id)
+    );
+
+    insert into public.user
+    (
+        id,
+        email,
+        password,
+        name,
+        role_type
+    ) values
+        (
+            1,
+            'admin@test.com',
+            '$2a$12$/mnPlMDXwZKdiHFNjG78MOsjT8oTMOx8FyG4jZddUXCFHnfh1Ix9K',
+            '管理者',
+            'ADMIN'
+        ),
+        (
+            2,
+            'user@test.com',
+            '$2a$12$8b2CuMHMzkC94UTwwJE/g.ThR2gzlu1HKXrWRRJi8UNk7XyuRc.kK',
+            'ユーザー',
+            'USER'
+        );
+    insert into public.plan
+    (
+        id,
+        user_id,
+        title,
+        description,
+        prefecture,
+        start_date,
+        end_date,
+        status
+    )
+    values
+    (1, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '東京都', '2023-01-22T12:00:00.000', '2023-01-22T16:00:00.000', 'UNPROCESSED'),
+    (2, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '埼玉県', '2023-01-30T12:00:00.000', '2023-01-30T16:00:00.000', 'UNPROCESSED'),
+    (3, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '神奈川県', '2023-02-05T12:00:00.000', '2023-02-05T16:00:00.000', 'UNPROCESSED'),
+    (4, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '神奈川県', '2023-02-09T12:00:00.000', '2023-02-09T16:00:00.000', 'UNPROCESSED');
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres
+  namespace: default
+  labels:
+    app: plan-manage
+    type: database
+spec:
+  containers:
+    - name: postgres
+      image: postgres:14-alpine
+      env:
+        - name: "POSTGRES_USER"
+          valueFrom:
+            secretKeyRef:
+              name: posgre-secret
+              key: POSTGRES_USER
+        - name: "POSTGRES_PASSWORD"
+          valueFrom:
+            secretKeyRef:
+              name: posgre-secret
+              key: POSTGRES_PASSWORD
+        - name: "POSTGRES_INITDB_AGES"
+          value: "--encoding=UTF-8"
+      ports:
+        - containerPort: 5432
+      volumeMounts:
+        - mountPath: "/data/db"
+          name: storage
+        - mountPath: /docker-entrypoint-initdb.d
+          name: db-init-sql
+          readOnly: true
+        - mountPath: /home/posgre
+          name: secret
+  volumes:
+    - name: storage
+      persistentVolumeClaim:
+        claimName: storage-claim-plan
+    - name: db-init-sql
+      configMap:
+        name: db-init-sql
+    - name: secret
+      secret:
+        secretName: posgre-secret
+        items:
+          - key: keyfile
+            path: keyfile
+            mode: 0700
