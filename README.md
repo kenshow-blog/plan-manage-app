@@ -54,3 +54,29 @@ solved docker problem by https://github.com/docker/for-mac/issues/6646.
 ```sh
 kubectl patch pvc nfs-data-volume -p '{"metadata":{"finalizers": []}}' --type=merge
 ```
+
+### docker では、デフォルトで systemctl を実行することができない
+
+実行すると下記のエラーが起きる
+
+```
+#16 0.270 Failed to get D-Bus connection: Operation not permitted
+#16 0.271 failed to find PGDATA setting in postgresql-12.service
+```
+
+下記を Dockerfile に追記することで解消
+
+```Dockerfile
+# systemdを有効化する
+ENV container docker
+RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done)
+RUN rm -f /lib/systemd/system/multi-user.target.wants/*
+RUN rm -f /etc/systemd/system/*.wants/*
+RUN rm -f /lib/systemd/system/local-fs.target.wants/*
+RUN rm -f /lib/systemd/system/sockets.target.wants/*udev*
+RUN rm -f /lib/systemd/system/sockets.target.wants/*initctl*
+RUN rm -f /lib/systemd/system/basic.target.wants/*
+RUN rm -f /lib/systemd/system/anaconda.target.wants/*
+VOLUME [ "/sys/fs/cgroup" ]
+CMD ["/usr/sbin/init"]
+```
