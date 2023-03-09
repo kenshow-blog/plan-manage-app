@@ -39,3 +39,18 @@ Once you create a new plan, you can see not only the plan's content but also the
 6. `$ yarn`
 
 7. `$ yarn run dev`
+
+## memo
+
+solved docker problem by https://github.com/docker/for-mac/issues/6646.
+1068 minikube image ls
+1069 minikube image load debug
+1070 minikube image ls
+1071 kubectl get pod
+1072 kubectl exec -it debug sh
+
+### Terminating になっている pvc を削除する
+
+```sh
+kubectl patch pvc nfs-data-volume -p '{"metadata":{"finalizers": []}}' --type=merge
+```

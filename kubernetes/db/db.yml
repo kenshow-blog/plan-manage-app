@@ -114,6 +114,25 @@ data:
     (4, 2, 'お客さんとゴルフ', 'お客さんとゴルフの接待をしに行く', '神奈川県', '2023-02-09T12:00:00.000', '2023-02-09T16:00:00.000', 'UNPROCESSED');
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  name: db-svc
+  namespace: default
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+  labels:
+    app: plan-manage
+    type: database
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: plan-manage
+    type: database
+---
+apiVersion: v1
 kind: Pod
 metadata:
   name: postgres
