@@ -80,3 +80,11 @@ RUN rm -f /lib/systemd/system/anaconda.target.wants/*
 VOLUME [ "/sys/fs/cgroup" ]
 CMD ["/usr/sbin/init"]
 ```
+
+### minkube 上で作成した db サーバーに外部からアクセスする方法
+
+```
+minikube service <serviceオブジェクト名>
+```
+
+で外部エンドポイントが作成されるのでそのエンドポイントを使用する。
