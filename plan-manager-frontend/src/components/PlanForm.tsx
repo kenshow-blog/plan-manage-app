@@ -128,7 +128,7 @@ const PlanForm = ({
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ja}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
-              <Grid xs={12} sm={8} p={4}>
+              <Grid xs={12} sm={8} p={2}>
                 <TextField
                   label="タイトル"
                   fullWidth
@@ -148,11 +148,11 @@ const PlanForm = ({
                   {...register("description")}
                 />
               </Grid>
-              <Grid xs={12} sm={4} p={4}>
+              <Grid xs={12} sm={4} p={2}>
                 <TextField
                   label="開始日時"
                   type="datetime-local"
-                  sx={{ width: 250, mb: 2 }}
+                  sx={{ width: 180, mb: 2 }}
                   error={!!errors.start_date}
                   helperText={errors.start_date?.message}
                   {...register("start_date")}
@@ -163,7 +163,7 @@ const PlanForm = ({
                 <TextField
                   label="終了日時"
                   type="datetime-local"
-                  sx={{ width: 250 }}
+                  sx={{ width: 180 }}
                   error={!!errors.end_date}
                   helperText={errors.end_date?.message}
                   {...register("end_date")}
@@ -175,7 +175,7 @@ const PlanForm = ({
                   fullWidth
                   margin="normal"
                   error={!!errors.prefecture}
-                  sx={{ width: 250 }}
+                  sx={{ width: 180 }}
                 >
                   <InputLabel>場所</InputLabel>
                   <Select
@@ -198,7 +198,7 @@ const PlanForm = ({
                   fullWidth
                   margin="normal"
                   error={!!errors.status}
-                  sx={{ width: 250 }}
+                  sx={{ width: 180 }}
                 >
                   <InputLabel>ステータス</InputLabel>
                   <Select

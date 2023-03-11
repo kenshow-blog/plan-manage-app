@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@date-io/date-fns": "^2.16.0",
-    "@emotion/react": "^11.10.6",
-    "@emotion/server": "^11.10.0",
-    "@emotion/styled": "^11.10.6",
+    "@emotion/react": "^11.9.0",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.8.1",
     "@hookform/resolvers": "^2.9.11",
     "@mui/lab": "^5.0.0-alpha.120",
     "@mui/x-date-pickers": "^5.0.19",
