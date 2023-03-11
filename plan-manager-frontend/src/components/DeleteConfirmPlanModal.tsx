@@ -4,17 +4,17 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useCallback } from "react";
-import { AppDispatch } from "redux/store";
+import { AppDispatch } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deletePlan,
   resetLoading,
   selectLoading,
   setLoading,
-} from "redux/planSlice";
+} from "../redux/planSlice";
 import { CircularProgress } from "@mui/material";
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute" as const,
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -31,7 +31,7 @@ export interface DeleteConfirmPlanModalProps {
   planId: number;
 }
 
-export const DeleteConfirmPlanModal = ({
+const DeleteConfirmPlanModal = ({
   isOpen,
   planId,
   onClose,
@@ -77,3 +77,5 @@ export const DeleteConfirmPlanModal = ({
     </Modal>
   );
 };
+
+export default DeleteConfirmPlanModal;

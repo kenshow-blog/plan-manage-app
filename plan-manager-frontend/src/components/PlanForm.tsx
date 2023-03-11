@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Prefectures, RequestBodyPlan, Status } from "redux/types";
+import { Prefectures, RequestBodyPlan, Status } from "../redux/types";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -15,7 +15,7 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import ja from "date-fns/locale/ja";
-import { AppDispatch } from "redux/store";
+import { AppDispatch } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createPlan,
@@ -23,7 +23,7 @@ import {
   selectLoading,
   setLoading,
   updatePlan,
-} from "redux/planSlice";
+} from "../redux/planSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useCallback } from "react";
 
@@ -68,7 +68,7 @@ interface PlanFormProps {
   type: (typeof PlanFormPropType)[number];
   onClose: () => void;
 }
-export const PlanForm = ({
+const PlanForm = ({
   id = 0,
   title = "",
   description = "",
@@ -171,26 +171,6 @@ export const PlanForm = ({
                     shrink: true,
                   }}
                 />
-                {/* <Controller
-          control={control}
-          {...control.register("start_date")}
-          render={({ field }) => (
-            <DateTimePicker
-              label="開始日時"
-              inputFormat="yyyy/MM/dd HH:mm:ss"
-              value={field.value}
-              onChange={(newValue) => field.onChange(newValue)}
-              //   {...register("start_date")}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  error={!!errors.start_date}
-                  helperText={errors.start_date?.message}
-                />
-              )}
-            />
-          )}
-        /> */}
                 <FormControl
                   fullWidth
                   margin="normal"
@@ -257,3 +237,5 @@ export const PlanForm = ({
     </>
   );
 };
+
+export default PlanForm;

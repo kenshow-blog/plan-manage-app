@@ -1,4 +1,4 @@
-import { Plan } from "redux/types";
+import { Plan } from "../redux/types";
 
 const timestampOfDay = 86400000;
 export const getPostCache = (): Plan[] | null => {

@@ -1,9 +1,9 @@
 import axios from "axios";
-import { Plan, PlanId, RequestBodyPlan } from "redux/types";
-import { getPostCache } from "util/chache";
+import { Plan, PlanId, RequestBodyPlan } from "../redux/types";
+import { getPostCache } from "../util/chache";
 
 const basicApi = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: process.env.BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 export const getPlanListApi = async (): Promise<Plan[]> => {

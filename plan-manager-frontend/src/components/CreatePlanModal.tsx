@@ -1,11 +1,10 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import { Plan } from "redux/types";
-import { PlanForm } from "./PlanForm";
+import PlanForm from "./PlanForm";
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute" as const,
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -16,17 +15,12 @@ const style = {
   textAlign: "center",
 };
 
-export interface EditPlanModalProps {
+export interface CreatePlanModalProps {
   isOpen: boolean;
   onClose: () => void;
-  plan: Plan;
 }
 
-export const EditPlanModal = ({
-  isOpen,
-  plan,
-  onClose,
-}: EditPlanModalProps) => {
+const CreatePlanModal = ({ isOpen, onClose }: CreatePlanModalProps) => {
   return (
     <Modal
       open={isOpen}
@@ -35,18 +29,10 @@ export const EditPlanModal = ({
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <PlanForm
-          id={plan.id}
-          title={plan.title}
-          description={plan.description}
-          prefecture={plan.prefecture}
-          start_date={plan.start_date}
-          end_date={plan.end_date}
-          status={plan.status}
-          type="edit"
-          onClose={onClose}
-        />
+        <PlanForm type="new" onClose={onClose} />
       </Box>
     </Modal>
   );
 };
+
+export default CreatePlanModal;

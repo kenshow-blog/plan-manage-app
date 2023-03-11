@@ -1,10 +1,9 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
-import store from "redux/store";
-import { useEffect } from "react";
+import store from "../redux/store";
 import { CacheProvider, EmotionCache, ThemeProvider } from "@emotion/react";
-import createEmotionCache from "createEmotionCache";
+import createEmotionCache from "../createEmotionCache";
 import { createTheme, CssBaseline } from "@mui/material";
 const clientSideEmotionCache = createEmotionCache();
 interface MyAppProps extends AppProps {

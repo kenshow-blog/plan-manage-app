@@ -1,13 +1,13 @@
 import { Box, Typography, Button } from "@mui/material";
-import { CollapsibleTable } from "component/PlanCollapsibleTable";
-import { CreatePlanModal } from "component/CreatePlanModal";
-import AppHead from "component/Head";
+import AppHead from "../components/Head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPlanList, selectPlanList } from "redux/planSlice";
-import { AppDispatch } from "redux/store";
+import { getPlanList, selectPlanList } from "../redux/planSlice";
+import { AppDispatch } from "../redux/store";
 import styles from "../styles/Home.module.css";
+import CreatePlanModal from "../components/CreatePlanModal";
+import CollapsibleTable from "../components/PlanCollapsibleTable";
 
 export default function Home() {
   const [openCreateModal, setCreateModal] = useState(false);

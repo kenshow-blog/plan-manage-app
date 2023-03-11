@@ -16,10 +16,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Image from "next/image";
 import { useState } from "react";
-import { EditPlanModal } from "./EditPlanModal";
-import { DeleteConfirmPlanModal } from "./DeleteConfirmPlanModal";
-import { Plan } from "redux/types";
-import { getDateString, getDateTimeString } from "util/date";
+import { Plan } from "../redux/types";
+import { getDateString, getDateTimeString } from "../util/date";
+import DeleteConfirmPlanModal from "./DeleteConfirmPlanModal";
+import EditPlanModal from "./EditPlanModal";
 
 const Row = (props: { row: Plan }) => {
   const { row } = props;
@@ -150,7 +150,7 @@ const Row = (props: { row: Plan }) => {
 export interface CollapsibleTableProps {
   planList: Plan[];
 }
-export const CollapsibleTable = ({ planList }: CollapsibleTableProps) => {
+const CollapsibleTable = ({ planList }: CollapsibleTableProps) => {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -174,3 +174,5 @@ export const CollapsibleTable = ({ planList }: CollapsibleTableProps) => {
     </TableContainer>
   );
 };
+
+export default CollapsibleTable;
