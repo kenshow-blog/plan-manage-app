@@ -9,6 +9,8 @@ Once you create a new plan, you can see not only the plan's content but also the
 ![アプリ画像](https://user-images.githubusercontent.com/85926984/221210558-41240259-7b90-45c4-9433-e0deead2dd85.png)
 
 ## Technical stack
+**kubernetes architecture**
+![architecture](./k8s-plan-manage-architecture.png)
 
 **frontend**
 
